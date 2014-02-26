@@ -4,7 +4,7 @@ Plugin Name: UKM Playback
 Plugin URI: http://www.ukm-norge.no
 Description: Opplasting av playback/singback til innslag for bruk i sceneproduksjon
 Author: UKM Norge / M Mandal 
-Version: 3.0 
+Version: 1.0 
 Author URI: http://www.ukm-norge.no
 */
 
