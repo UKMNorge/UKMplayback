@@ -13,13 +13,9 @@ jQuery(document).ready(function(){
 	        jQuery('#uploadprogress').attr('value', progress);
 	    },
     }).bind('fileuploaddone', function(e, data){
-    		console.log('COMPLETE');
-    		console.log( data );
 		    if(!data.result.success) {
-		    	console.log('ERROR');
 			    fileUploadError( data.result );
 		    } else {
-		    	console.log('SUCCESS');
 			   	jQuery('#uploading').slideUp();
 			   	jQuery('#uploaded').slideDown();
 			    jQuery('#filename').val(data.result.files[0].file_id);
