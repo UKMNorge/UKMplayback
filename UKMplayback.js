@@ -9,6 +9,16 @@ jQuery(document).ready(function(){
 	        	   'pl_id': jQuery('#pl_id').val()
 	        	   },
         progressall: function (e, data) {
+    		console.log(data);
+		    if(!data.result.success) {
+			    fileUploadError( data.result );
+		    } else {
+			   	jQuery('#uploading').slideUp();
+			   	jQuery('#uploaded').slideDown();
+			    jQuery('#filename').val(data.result.files[0].file_id);
+			    jQuery('#submitbutton').attr('disabled','').removeAttr('disabled');
+			}
+
 	        var progress = parseInt(data.loaded / data.total * 100, 10);
 	        jQuery('#uploadprogress').attr('value', progress);
 	    },
