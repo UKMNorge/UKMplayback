@@ -1,24 +1,21 @@
 <?php
 ini_set("log_errors", 1);
 ini_set("error_log", dirname(__FILE__).'/error_log');
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
-require_once('jQupload_handler.inc.php');
+require_once('jQupload_handler.php');
 require_once('UKM/sql.class.php');
 
-define('DIR_UPLOAD', 'upload_temp/');
-define('DIR_DATA', 'data/');
+define('DIR_UPLOAD', dirname(__FILE__). '/upload_temp/');
+define('DIR_DATA', dirname(__FILE__). '/data/');
 
-error_log('UPLOADED: '. DIR_UPLOAD);
+#error_log('UPLOAD START');
 
-	################################################
-	## SET ALL HEADERS AND ACTUALLY PERFORM UPLOAD 
-	header('Access-Control-Allow-Headers: true');
-	header('Access-Control-Allow-Origin: ukm.no');
-	header('Access-Control-Request-Method: OPTIONS, HEAD, GET, POST, PUT, PATCH, DELETE');
-	header('Access-Control-Allow-Credentials: true');
-
-	$upload_handler = new UploadHandler(array('upload_dir' => DIR_UPLOAD));
+	$upload_handler = new UploadHandler(array('upload_dir' => DIR_UPLOAD,
+											  'access_control_allow_origin'=>'http://ukm.no',
+											  'access_control_allow_credentials'=>true
+											 )
+										);
 
 	################################################
 	## GET THE DATA ARRAY FOR FURTHER MANIPULATING
@@ -30,6 +27,7 @@ error_log('UPLOADED: '. DIR_UPLOAD);
 		$error->success = false;
 		$error->message = 'Det er en feil med filstørrelsen. Dette kan være en feil i nettleseren din, eller fordi filen er skadet og inneholder feil informasjon om egen filstørrelse.';
 		$error->data = $data;
+		#error_log('UPLOAD END DUE TO FILESIZE BUG');
 		die(json_encode($error));
 	}
 	
@@ -42,6 +40,7 @@ error_log('UPLOADED: '. DIR_UPLOAD);
 		$error->request = $_REQUEST;
 		$error->post = $_POST;
 		$error->get = $_GET;
+		#error_log('UPLOAD END DUE TO MISSING POST VALUES');
 		die(json_encode($error));
 	}
 	
@@ -53,7 +52,8 @@ error_log('UPLOADED: '. DIR_UPLOAD);
 	if(sizeof($filetype_matches) == 0) {
 		$error = new stdClass;
 		$error->success = false;
-		$error->message = 'Playbackopplasteren tar kun i mot audiofiler!';
+		$error->message = 'Playbackopplasteren tar kun i mot audiofiler! (.flac er ikke støttet)';
+		#error_log('UPLOAD END DUE TO WRONG FILE TYPE');
 		die(json_encode($error));
 	}
 
@@ -65,44 +65,51 @@ error_log('UPLOADED: '. DIR_UPLOAD);
 	################################################
 	## CALCULATE FILE EXTENSION OF UPLOADED FILE
 	$file_ext = strtolower(substr($data_object->name, strrpos($data_object->name, '.')));
+	#error_log('File extension:' . $file_ext);
 
 	################################################
 	## CALCULATE NEW FILENAME OF FILE
 	
 	$file_path = DIR_DATA . $SEASON .'/'. $PL_ID.'/' ;
 	
-	if( !is_dir( $file_path ) ) {
-		mkdir( $file_path );
+	if( !is_dir( DIR_DATA . $SEASON ) ) {
+		mkdir( DIR_DATA . $SEASON );
 	}
+	if( !is_dir( DIR_DATA . $SEASON .'/'. $PL_ID ) ) {
+		mkdir( DIR_DATA . $SEASON .'/'. $PL_ID );
+	}
+
+	$filenum_separator = '_fil_';
 	
 	$target_dir_files = scandir( $file_path, SCANDIR_SORT_DESCENDING );
 	if( sizeof( $target_dir_files ) == 0 ) {
 		$num = 1;
 	} else {
-		$last_file = end( $target_dir_files );
-		$last_file_num = explode('_num', $last_file);
+		$last_file = $target_dir_files[0];
+		$last_file_num = explode($filenum_separator, $last_file);
 		$last_file_num = explode('.', $last_file_num[1]);
 		$last_file_num = (int) $last_file_num[0];
 		$num = ++$last_file_num;
 	}
 	
-	$file_name = 'UKMpb_'.$SEASON .'_pl'. $PL_ID . '_num'. $num .'.'.$file_ext;
-
+	$file_name = 'UKMplayback_'.$SEASON .'_pl'. $PL_ID . $filenum_separator . $num .$file_ext;
+	#error_log('File name:' . $file_name);
 			
 	###################################################
 	## CALCULATE THE REAL WIDTH AND HEIGHT BASED ON UPLOADED FILE
-	$file_uploaded = DIR_TEMP_UPLOAD.$data_object->name;
-	
+	$file_uploaded = DIR_UPLOAD.$data_object->name;
+	#error_log('Savefile name:' . $file_name);
 	
 	###################################################
 	## MOVE FILE TO CONVERT-DIRECTORY
 	
-	rename($file_uploaded, DIR_DATA.$file_path.$file_name);
+	rename($file_uploaded, $file_path.$file_name);
 				
 	###################################################
 	## CREATE RETURN-OBJECT FOR JQUERY UPLOADER
 	$data_object->file_id = $file_name;
 	$data->files[0] = $data_object;
 	$data->success = true;
+	#error_log('UPLOAD COMPLETED SUCCESSFULLY');
 	die(json_encode($data));
 ?>
