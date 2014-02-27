@@ -65,6 +65,7 @@ function UKMplayback() {
 	$INFOS['monstring']->pl_id = $pl->g('pl_id');
 
 	require_once('controller/save.controller.php');
+	require_once('controller/delete.controller.php');
 
 	
 	if( $_GET['action'] == 'upload' ) {

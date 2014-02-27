@@ -15,7 +15,7 @@
 						<td class="col-xs-4">
 							<strong>{{playback.name}}</strong>
 							<br />
-							<small><em>{{playback.file}}</em></small>
+							<small>Filnavn: {{playback.file}}</small>
 						</td>
 						<td class="col-xs-4">{{playback.description}}</td>
 						<td class="col-xs-2">
@@ -26,7 +26,7 @@
 						</td>
 						{% if playback.pl_id == monstring.pl_id %}
 						<td class="col-xs-2">
-							<a href="#">
+							<a href="?page=UKMplayback&delete_id={{playback.id}}&delete_b_id={{playback.b_id}}" class="PBdel">
 								<img src="//ico.ukm.no/delete-256.png" width="25" />
 								<small>Slett</small>
 							</a>
