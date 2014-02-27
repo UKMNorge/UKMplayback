@@ -13,6 +13,7 @@ jQuery(document).ready(function(){
 	        jQuery('#uploadprogress').attr('value', progress);
 	    },
     }).bind('fileuploaddone', function(e, data){
+    		console.log(data);
 		    if(!data.result.success) {
 			    fileUploadError( data.result );
 		    } else {
