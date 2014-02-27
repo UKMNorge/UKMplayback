@@ -13,18 +13,19 @@ jQuery(document).ready(function(){
 	        jQuery('#uploadprogress').attr('value', progress);
 	    },
     }).bind('fileuploaddone', function(e, data){
-    		console.log(data);
+    		console.log('COMPLETE');
+    		console.log( data );
 		    if(!data.result.success) {
+		    	console.log('ERROR');
 			    fileUploadError( data.result );
 		    } else {
+		    	console.log('SUCCESS');
 			   	jQuery('#uploading').slideUp();
 			   	jQuery('#uploaded').slideDown();
 			    jQuery('#filename').val(data.result.files[0].file_id);
 			    jQuery('#submitbutton').attr('disabled','').removeAttr('disabled');
 			}
-	}).bind('fileuploadstart', function(e, data){
-		console.log( e );
-		console.log( data );
+	}).bind('fileuploadstart', function(){
 		jQuery('#filechooser').slideUp();
 		jQuery('#uploading').slideDown();
 		jQuery('#fileupload_dropzone').fadeOut();
