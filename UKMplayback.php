@@ -18,7 +18,7 @@ if(is_admin()) {
 }
 
 function UKMplayback_menu() {
-	if( $_SERVER['REMOTE_ADDR'] == '81.0.146.162' ) {
+	if( $_SERVER['REMOTE_ADDR'] == '81.0.146.162' || $_SERVER['REMOTE_ADDR'] == '127.0.0.1' ) {
 		UKM_add_menu_page('monstring','Playback', 'Playback', 'administrator', 'UKMplayback','UKMplayback', 'http://ico.ukm.no/music-menu.png', 16);
 		UKM_add_scripts_and_styles('UKMplayback', 'UKMplayback_scripts_and_styles' );
 	}

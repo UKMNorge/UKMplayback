@@ -9,30 +9,32 @@
 	{% for innslag in pb_innslag %}
 		<li>
 			<h3>{{innslag.name}}</h3>
-				<ul class="list-unstyled">
-					{% for playback in innslag.playback %}
-					<li>
-						<table class="table table-striped">
-							<th class="col-xs-4">{{playback.name}}</div>
-							<td class="col-xs-4">{{playback.description}}</td>
-							<td class="col-xs-2">
-								<a href="//playback.ukm.no/{{playback.pl_id}}/{{playback.id}}/" target="_blank">
-									<img src="//ico.ukm.no/download-32.png" width="25" />
-									<small>Last ned</small>
-								</a>
-							</td>
-							{% if playback.pl_id == monstring.pl_id %}
-							<td class="col-xs-2">
-								<a href="#">
-									<img src="//ico.ukm.no/delete-256.png" width="25" />
-									<small>Slett</small>
-								</a>
-							</td>
-							{% endif %}
-						</table>
-					</li>
-					{% endfor %}
-				</ul>
+			<table class="table table-striped">
+				{% for playback in innslag.playback %}
+					<tr>
+						<td class="col-xs-4">
+							<strong>{{playback.name}}</strong>
+							<br />
+							<small><em>{{playback.file}}</em></small>
+						</td>
+						<td class="col-xs-4">{{playback.description}}</td>
+						<td class="col-xs-2">
+							<a href="//playback.ukm.no/{{playback.pl_id}}/{{playback.id}}/" target="_blank">
+								<img src="//ico.ukm.no/download-32.png" width="25" />
+								<small>Last ned</small>
+							</a>
+						</td>
+						{% if playback.pl_id == monstring.pl_id %}
+						<td class="col-xs-2">
+							<a href="#">
+								<img src="//ico.ukm.no/delete-256.png" width="25" />
+								<small>Slett</small>
+							</a>
+						</td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</table>
 		</li>
 	{% else %}
 		<li class="alert alert-info">Ingen innslag på din mønstring har opplastede playbackfiler</li>
