@@ -46,7 +46,7 @@ define('DIR_DATA', dirname(__FILE__). '/data/');
 	
 	################################################
 	## CHECK SUBMITTED FILE IS VIDEO-FILE (MIME-TYPE)
-	$filetype_matches = null;
+/*	$filetype_matches = null;
 	$returnValue = preg_match('^audio\\/(.)+^', $data_object->type, $filetype_matches);
 	
 	if(sizeof($filetype_matches) == 0) {
@@ -55,7 +55,7 @@ define('DIR_DATA', dirname(__FILE__). '/data/');
 		$error->message = 'Playbackopplasteren tar kun i mot audiofiler! (.flac er ikke støttet)';
 		#error_log('UPLOAD END DUE TO WRONG FILE TYPE');
 		die(json_encode($error));
-	}
+	}*/
 
 	################################################
 	## SET POST VARS AS VARS	
