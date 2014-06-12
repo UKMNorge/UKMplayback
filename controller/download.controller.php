@@ -4,6 +4,8 @@ require_once('UKM/forestilling.class.php');
 require_once('UKM/innslag.class.php');
 require_once('UKM/curl.class.php');
 
+unset($INFOS['innslag']);
+
 $m = new monstring( get_option('pl_id') );
 $DEBUGMODE = false;
 
@@ -74,7 +76,6 @@ if( !$DEBUGMODE ) {
 		}
 	}
 }
-
 if( $DEBUGMODE ) {
 	$INFOS['debug'] = true;
 }
