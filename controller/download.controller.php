@@ -58,6 +58,7 @@ foreach( $hendelser as $con ) {
 	}
 	if( sizeof( $mediafiler ) > 0 ) {
 		$curl = new UKMCURL();
+		$curl->timeout(60);
 		$jsondata = new stdClass();
 		$jsondata->filename = 'UKM Playback '. $m->g('pl_name') .' '. $c->g('c_name');
 		$jsondata->bands = $mediafiler;
