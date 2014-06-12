@@ -13,7 +13,7 @@ $alle_innslag = $m->innslag();
 $hendelser = $m->concerts();
 
 ob_start();
-echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerer...</h3>
+echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerar...</h3>
 		<p class="hideOnDocReady">Alle playbackfiler for mønstringen</p>';
 ob_flush();
 flush();
