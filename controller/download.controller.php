@@ -17,7 +17,7 @@ echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerer...</h3>
 		<p class="hideOnDocReady">Alle playbackfiler for mønstringen</p>';
 ob_flush();
 flush();
-$mediafiler = array('alle_innslag' => array(), 'forestilling' => array());
+$mediafiler = array();
 
 foreach( $alle_innslag as $inn ) {
 	$i = new innslag( $inn['b_id'] );
