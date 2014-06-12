@@ -6,7 +6,7 @@
 			<div class="alert alert-warning">
 				<p>Følgende filer ble ikke inkludert i zip-filen og må lastes ned manuelt</p>
 				{% for note in data.notifications %}
-					<p>{{note.name}}: <a href="{{note.url}}">Last ned manuelt</a> (årsak: {{note.notify}})</p>
+					<p>{{note.name}}: <a href="{{note.url}}">Last ned manuelt</a><br /> &nbsp; &nbsp; (årsak: {{note.notify}})</p>
 				{% endfor %}
 			</div>
 		{% endif %}
