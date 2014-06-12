@@ -13,6 +13,7 @@ $hendelser = $m->concerts();
 
 ob_start();
 echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerer...</h3>
+	<p class="lead hideOnDocReady">Dette kan ta flere minutter!</p>
 		<p class="hideOnDocReady">Alle playbackfiler for mønstringen</p>';
 ob_flush();
 flush();
@@ -37,9 +38,7 @@ $jsondata->filename = 'UKM Playback '. $m->g('pl_name');
 $jsondata->bands = $mediafiler;
 $INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 
-var_dump( $INFOS['alle_filer'] );
 
-/*
 foreach( $hendelser as $con ) {
 	$c = new forestilling( $con['c_id'] );
 	$rekkefolge = $c->concertBands();
@@ -63,20 +62,13 @@ foreach( $hendelser as $con ) {
 		$jsondata->filename = 'UKM Playback '. $m->g('pl_name') .' '. $c->g('c_name');
 		$jsondata->bands = $mediafiler;
 		
-		$viewdata = new stdClass();
-		$viewdata->name = $c->g('c_name');
-		$viewdata->url = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
-		
-		if( $re)
+		$viewdata = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
+		$viewdata->name = $c->g('c_name');		
 		
 		$INFOS['forestillinger'][] = $viewdata;
-		if( strpos( $viewdata->url, 'playback.ukm.no' ) == false ) {
-			$DEBUGMODE = true;
-			continue;
-		}
 	}
 }
-*/
+
 
 echo '<script>jQuery(document).on(\'ready\', function(){jQuery(\'.hideOnDocReady\').slideUp()});</script>';
 ob_flush();
