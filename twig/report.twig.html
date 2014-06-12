@@ -2,6 +2,14 @@
 {% if data.success %}
 	<li {{ data.notify ? 'class="alert alert-info"' : ''}}>
 		<p><a href="{{data.url}}">Last ned zip-fil</a></p>
+		{% if data.notify %}
+			<div class="alert alert-warning">
+				<p>Følgende filer ble ikke inkludert i zip-filen og må lastes ned manuelt</p>
+				{% for note in data.notifications %}
+					<p>{{note.name}}: <a href="{{note.url">Last ned manuelt</a> (årsak: {{note.notify}})</p>
+				{% endif %}
+			</div>
+		{% endif %}
 	</li>
 {% else %}
 	<li class="alert alert-danger">
