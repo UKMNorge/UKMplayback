@@ -14,14 +14,16 @@ foreach( $alle_innslag as $inn ) {
 	$i = new innslag( $inn['b_id'] );
 	
 	if( $i->har_playback() ) {
-		$data = new stdClass();
-		$data->name = $i->g('b_name');
-		$data->playback = $i->playback();
-		$mediafiler['alle_innslag'][] = $data;
+		$mediafiler['alle_innslag'][] = $i->g('b_id');
 	}
 }
 
-$zipname = 'UKM Playback '. $m->g('pl_name');
+$curl = new UKMCURL();
+$INFOS['alle_filer'] = $curl->JSONpost('http://playback.ukm.no/zipMePlease/', $mediafiler['alle_innslag'] );
+
+
+/*
+	$zipname = 'UKM Playback '. $m->g('pl_name');
 $zip = new zip( $zipname .' ALLE FILER' , true );
 $zip->debugMode();
 $zip->add( '/home/ukmno/public_html/wp-content/plugins/UKMplayback/twig/upload.twig.html', 'TwigTest.html' );
@@ -37,3 +39,6 @@ foreach( $mediafiler['alle_innslag'] as $data ) {
 	}
 }
 $INFOS['alle_filer'] = $zip->compress();
+
+	
+*/
