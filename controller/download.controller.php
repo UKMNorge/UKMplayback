@@ -79,6 +79,8 @@ if( $DEBUGMODE ) {
 	$INFOS['debug'] = true;
 }
 echo '<script>jQuery(document).on(\'ready\', function(){jQuery(\'.hideOnDocReady\').slideUp()});</script>';
+
+var_dump( $INFOS );
 ob_flush();
 flush();
 ob_end_clean();
