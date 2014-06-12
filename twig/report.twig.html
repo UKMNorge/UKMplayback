@@ -1,7 +1,7 @@
-<h4>Alle filer</h4>
+<h4>{{ name is defined ? name : data.name }}</h4>
 {% if data.success %}
 	<li {{ data.notify ? 'class="alert alert-info"' : ''}}>
-		<p><a href="{{data.url}}">Last ned {{ name is defined ? name : data.name }}</a></p>
+		<p><a href="{{data.url}}">Last ned zip-fil</a></p>
 	</li>
 {% else %}
 	<li class="alert alert-danger">

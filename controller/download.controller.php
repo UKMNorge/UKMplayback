@@ -63,8 +63,12 @@ foreach( $hendelser as $con ) {
 		$jsondata->bands = $mediafiler;
 		
 		$viewdata = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
+		if( !$viewdata ) {
+			$viewdata = new stdClass();
+			$viewdata->success = false;
+			$viewdata->error = 'Det tok for lang tid å generere filen. Kontakt UKM Norge';
+		}
 		$viewdata->name = $c->g('c_name');		
-		
 		$INFOS['forestillinger'][] = $viewdata;
 	}
 }
