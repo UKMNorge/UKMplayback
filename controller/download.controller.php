@@ -13,7 +13,7 @@ $alle_innslag = $m->innslag();
 $hendelser = $m->concerts();
 
 ob_start();
-echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerar...</h3>
+echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerer...</h3>
 		<p class="hideOnDocReady">Alle playbackfiler for mønstringen</p>';
 ob_flush();
 flush();
@@ -35,6 +35,8 @@ $curl = new UKMCURL();
 $jsondata = new stdClass();
 $jsondata->filename = 'UKM Playback '. $m->g('pl_name');
 $jsondata->bands = $mediafiler;
+
+var_dump( $jsondata );
 $INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 
 if( strpos( $INFOS['alle_filer'], 'playback.ukm.no/' ) == false ) { 
