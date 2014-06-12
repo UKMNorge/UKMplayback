@@ -2,7 +2,7 @@
 require_once('UKM/monstring.class.php');
 require_once('UKM/forestilling.class.php');
 require_once('UKM/innslag.class.php');
-require_once('UKM/zip.class.php');
+require_once('UKM/curl.class.php');
 
 $m = new monstring( get_option('pl_id') );
 
@@ -18,8 +18,12 @@ foreach( $alle_innslag as $inn ) {
 	}
 }
 
+// Exchange list of bands for zip-file
 $curl = new UKMCURL();
-$INFOS['alle_filer'] = $curl->JSONpost('http://playback.ukm.no/zipMePlease/', $mediafiler['alle_innslag'] );
+$jsondata = new stdClass();
+$jsondata->filename = 'UKM Playback '. $m->g('pl_name');
+$jsondata->bands = $mediafiler['alle_innslag'];
+$INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 
 
 /*
