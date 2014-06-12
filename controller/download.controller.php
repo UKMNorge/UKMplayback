@@ -9,6 +9,11 @@ $m = new monstring( get_option('pl_id') );
 $alle_innslag = $m->innslag();
 $hendelser = $m->concerts();
 
+ob_start();
+echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerer...</h3>
+		<p class="hideOnDocReady">Alle playbackfiler for mønstringen</p>';
+ob_flush();
+flush();
 $mediafiler = array('alle_innslag' => array(), 'forestilling' => array());
 
 foreach( $alle_innslag as $inn ) {
@@ -32,7 +37,9 @@ $INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no
 foreach( $hendelser as $con ) {
 	$c = new forestilling( $con['c_id'] );
 	$rekkefolge = $c->concertBands();
-	
+	echo '<p class="hideOnDocReady">Playbackfiler for '. $c->g('c_name') .'</p>';
+	ob_flush();
+	flush();
 	$mediafiler = array();
 	foreach( $rekkefolge as $int => $inn ) {
 		$i = new innslag( $inn['b_id'] );
@@ -54,6 +61,9 @@ foreach( $hendelser as $con ) {
 		$viewdata->name = $c->g('c_name');
 		$viewdata->url = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 		$INFOS['forestillinger'][] = $viewdata;
-	}
-	
+	}	
 }
+echo '<script>jQuery(document).on(\'ready\', function(){jQuery(\'.hideOnDocReady\').slideUp()});</script>';
+ob_flush();
+flush();
+ob_end_clean();
