@@ -22,7 +22,7 @@ foreach( $alle_innslag as $inn ) {
 }
 
 $zipname = 'UKM Playback '. $m->g('pl_name');
-$zip_all = new zip( $zipname .' ALLE FILER' , true );
+$zip = new zip( $zipname .' ALLE FILER' , true );
 // LOOP ALLE INNSLAG
 foreach( $mediafiler['alle_innslag'] as $data ) {
 	// LOOP ALLE PLAYBACKFILER TILKNYTTET INNSLAGET OG LEGG TIL ZIP
