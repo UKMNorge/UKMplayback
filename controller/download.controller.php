@@ -23,6 +23,7 @@ foreach( $alle_innslag as $inn ) {
 
 $zipname = 'UKM Playback '. $m->g('pl_name');
 $zip = new zip( $zipname .' ALLE FILER' , true );
+$zip->debugMode();
 $zip->add( '/home/ukmno/public_html/wp-content/plugins/UKMplayback/twig/upload.twig.html', 'TwigTest.html' );
 
 // LOOP ALLE INNSLAG
