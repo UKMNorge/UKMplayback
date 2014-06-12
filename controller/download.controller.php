@@ -32,5 +32,5 @@ foreach( $mediafiler['alle_innslag'] as $data ) {
 		echo $path .' => '. $name .'<br />';
 		$zip->add( $path, $name );
 	}
-	$TWIG['alle_filer'] = $zip->compress();
+	$INFOS['alle_filer'] = $zip->compress();
 }
