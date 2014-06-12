@@ -7,14 +7,18 @@ require_once('UKM/curl.class.php');
 $m = new monstring( get_option('pl_id') );
 
 $alle_innslag = $m->innslag();
+$hendelser = $m->concerts();
 
-$mediafiler = array();
+$mediafiler = array('alle_innslag' => array(), 'forestilling' => array());
 
 foreach( $alle_innslag as $inn ) {
 	$i = new innslag( $inn['b_id'] );
 	
 	if( $i->har_playback() ) {
-		$mediafiler['alle_innslag'][] = $i->g('b_id');
+		$media = new stdClass();
+		$media->navn = $i->g('b_name');
+		$media->innslag = $i->g('b_id');
+		$mediafiler[] = $media;
 	}
 }
 
@@ -22,27 +26,34 @@ foreach( $alle_innslag as $inn ) {
 $curl = new UKMCURL();
 $jsondata = new stdClass();
 $jsondata->filename = 'UKM Playback '. $m->g('pl_name');
-$jsondata->bands = $mediafiler['alle_innslag'];
+$jsondata->bands = $mediafiler;
 $INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 
-
-/*
-	$zipname = 'UKM Playback '. $m->g('pl_name');
-$zip = new zip( $zipname .' ALLE FILER' , true );
-$zip->debugMode();
-$zip->add( '/home/ukmno/public_html/wp-content/plugins/UKMplayback/twig/upload.twig.html', 'TwigTest.html' );
-
-// LOOP ALLE INNSLAG
-foreach( $mediafiler['alle_innslag'] as $data ) {
-	// LOOP ALLE PLAYBACKFILER TILKNYTTET INNSLAGET OG LEGG TIL ZIP
-	foreach( $data->playback as $i => $playback ) {
-		$path = $playback->local_file;
-		$name = $data->name .' FIL '. $i . $playback->extension;
-		echo $path .' => '. $name .'<br />';
-		$zip->add( $path, $name );
-	}
-}
-$INFOS['alle_filer'] = $zip->compress();
-
+foreach( $hendelser as $con ) {
+	$c = new forestilling( $con['c_id'] );
+	$rekkefolge = $c->concertBands();
 	
-*/
+	$mediafiler = array();
+	foreach( $rekkefolge as $int => $inn ) {
+		$i = new innslag( $inn['b_id'] );
+		
+		if( $i->har_playback() ) {
+			$media = new stdClass();
+			$media->navn = $int .'. '. $i->g('b_name');
+			$media->innslag = $i->g('b_id');
+			$mediafiler[] = $media;
+		}
+	}
+	if( sizeof( $mediafiler ) > 0 ) {
+		$curl = new UKMCURL();
+		$jsondata = new stdClass();
+		$jsondata->filename = 'UKM Playback '. $m->g('pl_name') .' '. $c->g('c_name');
+		$jsondata->bands = $mediafiler;
+		
+		$viewdata = new stdClass();
+		$viewdata->name = $c->g('c_name');
+		$viewdata->url = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
+		$INFOS['forestillinger'][] = $viewdata;
+	}
+	
+}
