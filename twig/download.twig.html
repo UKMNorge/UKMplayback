@@ -2,14 +2,28 @@
 
 {% block content %}
 	<h2>Last ned alle filer</h2>
-	<a href="{{alle_filer}}">Alle filer tilknyttet min mønstring</a>
+
+	{% if debug is defined and debug %}
+		<div class="alert alert-danger">
+			<h4>EN ELLER FLERE FILER MANGLER!</h4>
+			<p>Modulen har gått i debugmodus. Dette skjer automatisk når en eller flere filer mangler. Kontakt UKM Norge</p>
+		</div>
+
+		Alle filer: {{alle_filer}}
+	{% else %}
+		<a href="{{alle_filer}}">Alle filer tilknyttet min mønstring</a>
+	{% endif %}
 	
 	<h5>Filer knyttet til en forestilling</h5>
 	
 	<ol class="list-unstyled">
 		{% for forestilling in forestillinger %}
 		<li>
-			<a href="{{forestilling.url}}">{{forestilling.name}}</a>
+			{% if debug is defined and debug %}
+				{{forestilling.name}}: {{forestilling.url}}
+			{% else %}
+				<a href="{{forestilling.url}}">{{forestilling.name}}</a>			
+			{% endif %}
 		</li>
 		{% else %}
 		<li>

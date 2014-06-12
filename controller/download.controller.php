@@ -5,6 +5,7 @@ require_once('UKM/innslag.class.php');
 require_once('UKM/curl.class.php');
 
 $m = new monstring( get_option('pl_id') );
+$DEBUGMODE = false;
 
 $alle_innslag = $m->innslag();
 $hendelser = $m->concerts();
@@ -34,34 +35,47 @@ $jsondata->filename = 'UKM Playback '. $m->g('pl_name');
 $jsondata->bands = $mediafiler;
 $INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 
-foreach( $hendelser as $con ) {
-	$c = new forestilling( $con['c_id'] );
-	$rekkefolge = $c->concertBands();
-	echo '<p class="hideOnDocReady">Playbackfiler for '. $c->g('c_name') .'</p>';
-	ob_flush();
-	flush();
-	$mediafiler = array();
-	foreach( $rekkefolge as $int => $inn ) {
-		$i = new innslag( $inn['b_id'] );
-		
-		if( $i->har_playback() ) {
-			$media = new stdClass();
-			$media->navn = $int .'. '. $i->g('b_name');
-			$media->innslag = $i->g('b_id');
-			$mediafiler[] = $media;
+if( strpos( $INFOS['alle_filer'], 'http://playback.ukm.no/' ) == false ) { 
+	$DEBUGMODE = true;
+} 
+
+if( !$DEBUGMODE ) {
+	foreach( $hendelser as $con ) {
+		$c = new forestilling( $con['c_id'] );
+		$rekkefolge = $c->concertBands();
+		echo '<p class="hideOnDocReady">Playbackfiler for '. $c->g('c_name') .'</p>';
+		ob_flush();
+		flush();
+		$mediafiler = array();
+		foreach( $rekkefolge as $int => $inn ) {
+			$i = new innslag( $inn['b_id'] );
+			
+			if( $i->har_playback() ) {
+				$media = new stdClass();
+				$media->navn = $int .'. '. $i->g('b_name');
+				$media->innslag = $i->g('b_id');
+				$mediafiler[] = $media;
+			}
+		}
+		if( sizeof( $mediafiler ) > 0 ) {
+			$curl = new UKMCURL();
+			$jsondata = new stdClass();
+			$jsondata->filename = 'UKM Playback '. $m->g('pl_name') .' '. $c->g('c_name');
+			$jsondata->bands = $mediafiler;
+			
+			$viewdata = new stdClass();
+			$viewdata->name = $c->g('c_name');
+			$viewdata->url = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
+			$INFOS['forestillinger'][] = $viewdata;
+			if( strpos( $viewdata->url, 'playback.ukm.no' ) == false ) {
+				continue;
+			}
 		}
 	}
-	if( sizeof( $mediafiler ) > 0 ) {
-		$curl = new UKMCURL();
-		$jsondata = new stdClass();
-		$jsondata->filename = 'UKM Playback '. $m->g('pl_name') .' '. $c->g('c_name');
-		$jsondata->bands = $mediafiler;
-		
-		$viewdata = new stdClass();
-		$viewdata->name = $c->g('c_name');
-		$viewdata->url = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
-		$INFOS['forestillinger'][] = $viewdata;
-	}	
+}
+
+if( $DEBUGMODE ) {
+	$INFOS['debug'] = true;
 }
 echo '<script>jQuery(document).on(\'ready\', function(){jQuery(\'.hideOnDocReady\').slideUp()});</script>';
 ob_flush();
