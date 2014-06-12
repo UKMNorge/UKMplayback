@@ -2,33 +2,12 @@
 
 {% block content %}
 	<h2>Last ned alle filer</h2>
-
-	{% if debug is defined and debug %}
-		<div class="alert alert-danger">
-			<h4>EN ELLER FLERE FILER MANGLER!</h4>
-			<p>Modulen har gått i debugmodus. Dette skjer automatisk når en eller flere filer mangler. Kontakt UKM Norge</p>
-		</div>
-
-		Alle filer: {{alle_filer|raw}}
-	{% else %}
-		<a href="{{alle_filer}}">Alle filer tilknyttet min mønstring</a>
-	{% endif %}
-	
-	<h5>Filer knyttet til en forestilling</h5>
 	
 	<ol class="list-unstyled">
+		{% embed "report.twig.html" with { data: alle_filer, name: 'alle filer tilknyttet min mønstring' } %}{% endembed %}
+
 		{% for forestilling in forestillinger %}
-		<li>
-			{% if debug is defined and debug %}
-				{{forestilling.name}}: {{forestilling.url|raw}}
-			{% else %}
-				<a href="{{forestilling.url}}">{{forestilling.name}}</a>			
-			{% endif %}
-		</li>
-		{% else %}
-		<li>
-			Fant ingen forestillinger som inneholder innslag med tilknyttede filer
-		</li>
+			{% embed "report.twig.html" with { data: alle_filer } %}{% endembed %}	
 		{% endfor %}
-	</ol>
+	</ol>	
 {% endblock %}

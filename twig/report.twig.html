@@ -1,0 +1,11 @@
+<h4>Alle filer</h4>
+{% if data.success %}
+	<li {{ data.notify ? 'class="alert alert-info"' : ''}}>
+		<p><a href="{{data.url}}">Last ned {{ name is defined ? name : data.name }}</a></p>
+	</li>
+{% else %}
+	<li class="alert alert-danger">
+		<p>En feil oppsto ved komprimering av filer!</p>
+		<p>Feilmelding: {{data.error}}</p>
+	</li>
+{% endif %}
