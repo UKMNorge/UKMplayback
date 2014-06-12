@@ -75,6 +75,9 @@ function UKMplayback() {
 	if( $_GET['action'] == 'list' ) {
 		require_once('controller/list.controller.php');
 	}
+	if( $_GET['action'] == 'download' ) {
+		require_once('controller/download.controller.php');
+	}
 	
 	
 	$INFOS['action'] = $_GET['action'];

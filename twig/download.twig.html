@@ -1,0 +1,22 @@
+{% extends "layout.twig.html" %}
+
+{% block content %}
+	<h2>Last ned alle filer</h2>
+	
+	<h5>Alle filer</h5>
+	<a href="{{alle_filer}}">Alle filer tilknyttet min mønstring</a>
+	
+	<h5>Filer knyttet til en forestilling</h5>
+	
+	<ol class="list-unstyled">
+		{% for forestilling in forestillinger %}
+		<li>
+			<a href="{{forestilling.zip}}">{{forestilling.navn}}</a>
+		</li>
+		{% else %}
+		<li>
+			Fant ingen forestillinger som inneholder innslag med tilknyttede filer
+		</li>
+		{% endfor %}
+	</ol>
+{% endblock %}
