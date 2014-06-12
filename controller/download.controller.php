@@ -35,8 +35,7 @@ $jsondata->filename = 'UKM Playback '. $m->g('pl_name');
 $jsondata->bands = $mediafiler;
 $INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 
-var_dump( strpos( $INFOS['alle_filer'], 'http://playback.ukm.no/' ) );
-if( strpos( $INFOS['alle_filer'], 'http://playback.ukm.no/' ) == false ) { 
+if( strpos( $INFOS['alle_filer'], 'http://playback.ukm.no/' ) === false ) { 
 	$DEBUGMODE = true;
 } 
 
@@ -68,7 +67,7 @@ if( !$DEBUGMODE ) {
 			$viewdata->name = $c->g('c_name');
 			$viewdata->url = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 			$INFOS['forestillinger'][] = $viewdata;
-			if( strpos( $viewdata->url, 'playback.ukm.no' ) == false ) {
+			if( strpos( $viewdata->url, 'playback.ukm.no' ) === false ) {
 				continue;
 			}
 		}
