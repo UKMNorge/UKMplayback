@@ -37,6 +37,8 @@ $jsondata->filename = 'UKM Playback '. $m->g('pl_name');
 $jsondata->bands = $mediafiler;
 $INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 
+var_dump( $curl );
+
 if( strpos( $INFOS['alle_filer'], 'playback.ukm.no/' ) == false ) { 
 	$DEBUGMODE = true;
 } 
