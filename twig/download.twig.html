@@ -9,7 +9,7 @@
 			<p>Modulen har gått i debugmodus. Dette skjer automatisk når en eller flere filer mangler. Kontakt UKM Norge</p>
 		</div>
 
-		Alle filer: {{alle_filer}}
+		Alle filer: {{alle_filer|raw}}
 	{% else %}
 		<a href="{{alle_filer}}">Alle filer tilknyttet min mønstring</a>
 	{% endif %}
@@ -20,7 +20,7 @@
 		{% for forestilling in forestillinger %}
 		<li>
 			{% if debug is defined and debug %}
-				{{forestilling.name}}: {{forestilling.url}}
+				{{forestilling.name}}: {{forestilling.url|raw}}
 			{% else %}
 				<a href="{{forestilling.url}}">{{forestilling.name}}</a>			
 			{% endif %}
