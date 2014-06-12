@@ -7,7 +7,7 @@
 		{% embed "report.twig.html" with { data: alle_filer, name: 'alle filer tilknyttet min mønstring' } %}{% endembed %}
 
 		{% for forestilling in forestillinger %}
-			{% embed "report.twig.html" with { data: alle_filer } %}{% endembed %}	
+			{% embed "report.twig.html" with { data: forestilling } %}{% endembed %}	
 		{% endfor %}
 	</ol>	
 {% endblock %}
