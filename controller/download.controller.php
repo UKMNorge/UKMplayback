@@ -32,6 +32,7 @@ foreach( $alle_innslag as $inn ) {
 
 // Exchange list of bands for zip-file
 $curl = new UKMCURL();
+$curl->timeout(60);
 $jsondata = new stdClass();
 $jsondata->filename = 'UKM Playback '. $m->g('pl_name');
 $jsondata->bands = $mediafiler;
