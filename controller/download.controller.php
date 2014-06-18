@@ -51,7 +51,7 @@ foreach( $hendelser as $con ) {
 		
 		if( $i->har_playback() ) {
 			$media = new stdClass();
-			$media->navn = $int .'. '. $i->g('b_name');
+			$media->navn = ($int+1) .'. '. $i->g('b_name');
 			$media->innslag = $i->g('b_id');
 			$mediafiler[] = $media;
 		}
