@@ -20,7 +20,7 @@ if(is_admin()) {
 function UKMplayback_menu() {
 	$pltype = get_option('site_type');
 	if( $pltype == 'land' || $pltype == 'kommune' || $pltype == 'fylke' ) {
-		UKM_add_menu_page('monstring','Playback', 'Playback', 'editor', 'UKMplayback','UKMplayback', 'http://ico.ukm.no/music-menu.png', 16);
+		UKM_add_menu_page('monstring','Playback', 'Playback', 'ukm_playback', 'UKMplayback','UKMplayback', 'http://ico.ukm.no/music-menu.png', 16);
 		UKM_add_scripts_and_styles('UKMplayback', 'UKMplayback_scripts_and_styles' );
 	}
 }
