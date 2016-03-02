@@ -16,18 +16,10 @@ define('ZIP_WRITE_PATH', '/home/ukmplayb/public_html/zipMePlease/data/');
 $zip = new zip( $data->filename, true );
 $zip->debugMode();
 
-
-foreach( $data->bands as $key => $pbdata ) {
-	$innslag = new innslag( $pbdata->innslag );
-
-	$playback = $innslag->playback();
-	foreach( $playback as $i => $pb ) {
-		$path = $pb->local_file();
-		$name = $pbdata->navn .' FIL '. ($i+1) . $pb->extension();
-		$zip->add( $path, $name );
-		#echo 'ADD '. $path .' AS '. $name .'<br />';
-	}
+foreach( $data->files as $path => $name ) {
+	$zip->add( $path, $name );
 }
+
 $url = $zip->compress();
 echo str_replace('download.ukm.no/zip', 'playback.ukm.no/zipMePlease/data', $url);
 die();
