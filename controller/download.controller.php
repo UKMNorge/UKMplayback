@@ -26,9 +26,7 @@ foreach( $alle_innslag as $inn ) {
 	
 	if( $innslag->har_playback() ) {
 		$playback = $innslag->playback();
-		$i = 0;
 		foreach( $playback as $i => $pb ) {
-			$i++;
 			$path = $pb->relative_file();
 			$name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
 			$files[ $path ] = $name;
@@ -58,13 +56,11 @@ foreach( $hendelser as $con ) {
 	// Sjekk filer for forestillingen
 	$files = array();
 	foreach( $rekkefolge as $int => $inn ) {
-		$i = new innslag( $inn['b_id'] );
+		$innslag = new innslag( $inn['b_id'] );
 		
-		if( $i->har_playback() ) {
+		if( $innslag->har_playback() ) {
 			$playback = $innslag->playback();
-			$i = 0;
 			foreach( $playback as $i => $pb ) {
-				$i++;
 				$path = $pb->relative_file();
 				$name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
 				$files[ $path ] = $name;
