@@ -17,25 +17,33 @@ echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerer...</h3>
 		<p class="hideOnDocReady">Alle playbackfiler for mønstringen</p>';
 ob_flush();
 flush();
-$mediafiler = array();
 
+
+// ALLE INNSLAG PÅ MØNSTRINGEN
+$files = array();
 foreach( $alle_innslag as $inn ) {
-	$i = new innslag( $inn['b_id'] );
+	$innslag = new innslag( $inn['b_id'] );
 	
-	if( $i->har_playback() ) {
-		$media = new stdClass();
-		$media->navn = $i->g('b_name');
-		$media->innslag = $i->g('b_id');
-		$mediafiler[] = $media;
+	if( $innslag->har_playback() ) {
+		$playback = $innslag->playback();
+		$i = 0;
+		foreach( $playback as $i => $pb ) {
+			$i++;
+			$path = $pb->local_file();
+			$name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
+			$files[ $path ] = $name;
+		}
 	}
 }
 
-// Exchange list of bands for zip-file
-$curl = new UKMCURL();
-$curl->timeout(60);
+// Prepare filelist as JSON
 $jsondata = new stdClass();
 $jsondata->filename = 'UKM Playback '. $m->g('pl_name');
-$jsondata->bands = $mediafiler;
+$jsondata->files = $files;
+
+// Exchange filelist for zipfile
+$curl = new UKMCURL();
+$curl->timeout(60);
 $INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 
 
@@ -45,24 +53,32 @@ foreach( $hendelser as $con ) {
 	echo '<p class="hideOnDocReady">Playbackfiler for '. $c->g('c_name') .'</p>';
 	ob_flush();
 	flush();
-	$mediafiler = array();
+
+	// Sjekk filer for forestillingen
+	$files = array();
 	foreach( $rekkefolge as $int => $inn ) {
 		$i = new innslag( $inn['b_id'] );
 		
 		if( $i->har_playback() ) {
-			$media = new stdClass();
-			$media->navn = ($int+1) .'. '. $i->g('b_name');
-			$media->innslag = $i->g('b_id');
-			$mediafiler[] = $media;
+			$playback = $innslag->playback();
+			$i = 0;
+			foreach( $playback as $i => $pb ) {
+				$i++;
+				$path = $pb->local_file();
+				$name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
+				$files[ $path ] = $name;
+			}
 		}
 	}
-	if( sizeof( $mediafiler ) > 0 ) {
-		$curl = new UKMCURL();
-		$curl->timeout(60);
+	if( sizeof( $files ) > 0 ) {
+		// Prepare filelist as JSON
 		$jsondata = new stdClass();
 		$jsondata->filename = 'UKM Playback '. $m->g('pl_name') .' '. $c->g('c_name');
-		$jsondata->bands = $mediafiler;
+		$jsondata->files = $files;
 		
+		// Exchange filelist for zipfile
+		$curl = new UKMCURL();
+		$curl->timeout(60);
 		$viewdata = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 		if( !$viewdata ) {
 			$viewdata = new stdClass();
@@ -70,7 +86,7 @@ foreach( $hendelser as $con ) {
 			$viewdata->error = 'Det tok for lang tid å generere filen. Kontakt UKM Norge';
 		}
 		$viewdata->name = $c->g('c_name');		
-		$INFOS['forestillinger'][] = $viewdata;
+		$INFOS['forestillinger'][] = $viewdata;		
 	}
 }
 
