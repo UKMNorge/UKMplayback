@@ -10,13 +10,12 @@ if( !file_exists( ZIP_WRITE_PATH ) ) {
 	mkdir( ZIP_WRITE_PATH, 0777, true );
 }
 
-
 // Create zip (and overwrite existing file)
 $zip = new zip( $data->filename, true );
 $zip->debugMode();
 
 foreach( $data->files as $path => $name ) {
-	$zip->add( $path, $name );
+	$zip->add( dirname( dirname( __FILE__ ) ) . '/'.  $path, $name );
 }
 
 $url = $zip->compress();
