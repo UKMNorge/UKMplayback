@@ -1,7 +1,7 @@
 <?php
 ini_set("log_errors", 1);
 ini_set("error_log", dirname(__FILE__).'/error_log');
-ini_set('display_errors', 1);
+#ini_set('display_errors', 1);
 
 require_once('jQupload_handler.php');
 require_once('UKM/sql.class.php');
@@ -9,7 +9,7 @@ require_once('UKM/sql.class.php');
 define('DIR_UPLOAD', dirname(__FILE__). '/upload_temp/');
 define('DIR_DATA', dirname(__FILE__). '/data/');
 
-#error_log('UPLOAD START');
+error_log('UPLOAD START');
 
 	$upload_handler = new UploadHandler(array('upload_dir' => DIR_UPLOAD,
 											  'access_control_allow_origin'=>'http://ukm.no',
@@ -21,13 +21,18 @@ define('DIR_DATA', dirname(__FILE__). '/data/');
 	## GET THE DATA ARRAY FOR FURTHER MANIPULATING
 	$data = json_decode($upload_handler->get_body());
 	$data_object = $data->files[0];
+error_log( var_export( $data_object, true ) );
+error_log( var_export( $data, true ) );
+error_log( var_export( $_POST, true ) );
+error_log( var_export( $_FILES, true ) );
+
 	
 	if(empty($data_object->size)) {
 		$error = new stdClass;
 		$error->success = false;
 		$error->message = 'Det er en feil med filstørrelsen. Dette kan være en feil i nettleseren din, eller fordi filen er skadet og inneholder feil informasjon om egen filstørrelse.';
 		$error->data = $data;
-		#error_log('UPLOAD END DUE TO FILESIZE BUG');
+error_log('UPLOAD END DUE TO FILESIZE BUG');
 		die(json_encode($error));
 	}
 	
@@ -40,7 +45,7 @@ define('DIR_DATA', dirname(__FILE__). '/data/');
 		$error->request = $_REQUEST;
 		$error->post = $_POST;
 		$error->get = $_GET;
-		#error_log('UPLOAD END DUE TO MISSING POST VALUES');
+error_log('UPLOAD END DUE TO MISSING POST VALUES');
 		die(json_encode($error));
 	}
 	
@@ -65,20 +70,24 @@ define('DIR_DATA', dirname(__FILE__). '/data/');
 	################################################
 	## CALCULATE FILE EXTENSION OF UPLOADED FILE
 	$file_ext = strtolower(substr($data_object->name, strrpos($data_object->name, '.')));
-	#error_log('File extension:' . $file_ext);
+error_log('File extension:' . $file_ext);
 
 	################################################
 	## CALCULATE NEW FILENAME OF FILE
 	
 	$file_path = DIR_DATA . $SEASON .'/'. $PL_ID.'/' ;
 	
+/*
 	if( !is_dir( DIR_DATA . $SEASON ) ) {
 		mkdir( DIR_DATA . $SEASON );
 	}
 	if( !is_dir( DIR_DATA . $SEASON .'/'. $PL_ID ) ) {
 		mkdir( DIR_DATA . $SEASON .'/'. $PL_ID );
 	}
-
+*/
+	if( !is_dir( $file_path ) ) {
+		mkdir( $file_path, 0777, true );
+	}
 	$filenum_separator = '_fil_';
 	
 	$target_dir_files = scandir( $file_path, SCANDIR_SORT_DESCENDING );
@@ -93,12 +102,12 @@ define('DIR_DATA', dirname(__FILE__). '/data/');
 	}
 	
 	$file_name = 'UKMplayback_'.$SEASON .'_pl'. $PL_ID . $filenum_separator . $num .$file_ext;
-	#error_log('File name:' . $file_name);
+error_log('File name:' . $file_name);
 			
 	###################################################
 	## CALCULATE THE REAL WIDTH AND HEIGHT BASED ON UPLOADED FILE
 	$file_uploaded = DIR_UPLOAD.$data_object->name;
-	#error_log('Savefile name:' . $file_name);
+error_log('Savefile name:' . $file_name);
 	
 	###################################################
 	## MOVE FILE TO CONVERT-DIRECTORY
@@ -110,6 +119,6 @@ define('DIR_DATA', dirname(__FILE__). '/data/');
 	$data_object->file_id = $file_name;
 	$data->files[0] = $data_object;
 	$data->success = true;
-	#error_log('UPLOAD COMPLETED SUCCESSFULLY');
+error_log('UPLOAD COMPLETED SUCCESSFULLY');
 	die(json_encode($data));
 ?>
