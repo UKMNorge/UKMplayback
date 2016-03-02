@@ -29,7 +29,7 @@ foreach( $alle_innslag as $inn ) {
 		$i = 0;
 		foreach( $playback as $i => $pb ) {
 			$i++;
-			$path = $pb->local_file();
+			$path = $pb->relative_file();
 			$name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
 			$files[ $path ] = $name;
 		}
@@ -46,6 +46,7 @@ $curl = new UKMCURL();
 $curl->timeout(60);
 $INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
 
+#var_dump( $curl );
 
 foreach( $hendelser as $con ) {
 	$c = new forestilling( $con['c_id'] );
@@ -64,7 +65,7 @@ foreach( $hendelser as $con ) {
 			$i = 0;
 			foreach( $playback as $i => $pb ) {
 				$i++;
-				$path = $pb->local_file();
+				$path = $pb->relative_file();
 				$name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
 				$files[ $path ] = $name;
 			}
