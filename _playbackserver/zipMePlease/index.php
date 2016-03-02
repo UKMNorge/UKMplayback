@@ -19,5 +19,7 @@ foreach( $data->files as $path => $name ) {
 }
 
 $url = $zip->compress();
-echo str_replace('download.ukm.no/zip', 'playback.ukm.no/zipMePlease/data', $url);
-die();
+
+$url = str_replace('download.ukm.no/zip', 'playback.ukm.no/zipMePlease/data', $url);
+$result = array('success' => true, 'url' => $url);
+die( json_encode( $result ) );
