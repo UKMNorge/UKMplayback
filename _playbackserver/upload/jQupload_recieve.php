@@ -1,10 +1,9 @@
 <?php
 ini_set("log_errors", 1);
-ini_set("error_log", dirname(__FILE__).'/error_log');
 #ini_set('display_errors', 1);
+#ini_set("error_log", dirname(__FILE__).'/error_log');
 
 require_once('jQupload_handler.php');
-require_once('UKM/sql.class.php');
 
 define('DIR_UPLOAD', dirname(__FILE__). '/upload_temp/');
 define('DIR_DATA', dirname(__FILE__). '/data/');
@@ -77,14 +76,6 @@ error_log('File extension:' . $file_ext);
 	
 	$file_path = DIR_DATA . $SEASON .'/'. $PL_ID.'/' ;
 	
-/*
-	if( !is_dir( DIR_DATA . $SEASON ) ) {
-		mkdir( DIR_DATA . $SEASON );
-	}
-	if( !is_dir( DIR_DATA . $SEASON .'/'. $PL_ID ) ) {
-		mkdir( DIR_DATA . $SEASON .'/'. $PL_ID );
-	}
-*/
 	if( !is_dir( $file_path ) ) {
 		mkdir( $file_path, 0777, true );
 	}
