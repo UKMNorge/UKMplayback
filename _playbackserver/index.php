@@ -4,6 +4,7 @@ if( !isset( $_GET['file'] ) || !isset( $_GET['pl_id']) || empty( $_GET['file'] )
 	die('Mangler identifikator'); 
 }
 
+require_once('UKMconfig.php');
 require_once('UKM/curl.class.php');
 $curl = new UKMCURL();
 $curl->timeout(10);
