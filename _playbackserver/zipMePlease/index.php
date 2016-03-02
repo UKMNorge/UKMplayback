@@ -4,12 +4,11 @@ if ( $_SERVER['REQUEST_METHOD'] != 'POST' ){
 }
 $data = json_decode( file_get_contents('php://input') );
 
-require_once('UKM/monstring.class.php');
-require_once('UKM/forestilling.class.php');
-require_once('UKM/innslag.class.php');
 require_once('UKM/zip.class.php');
-
-define('ZIP_WRITE_PATH', '/home/ukmplayb/public_html/zipMePlease/data/');
+define('ZIP_WRITE_PATH', __DIR__ .'/data/');
+if( !file_exists( ZIP_WRITE_PATH ) ) {
+	mkdir( ZIP_WRITE_PATH, 0777, true );
+}
 
 
 // Create zip (and overwrite existing file)
