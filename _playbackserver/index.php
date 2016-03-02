@@ -4,18 +4,14 @@ if( !isset( $_GET['file'] ) || !isset( $_GET['pl_id']) || empty( $_GET['file'] )
 	die('Mangler identifikator'); 
 }
 
-require_once('UKM/sql.class.php');
+require_once('UKM/curl.class.php');
+$curl = new UKMCURL();
+$curl->timeout(10);
 
-$sql = new SQL("SELECT * 
-				FROM `ukm_playback`
-				WHERE `pb_id` = '#id'
-				AND `pl_id` = '#plid'",
-			   array('id' => $_GET['file'], 'plid' => $_GET['pl_id'] )
-			  );
-$res = $sql->run();
-$file = mysql_fetch_assoc( $res );
+$filedata = $curl->request('http://api.' . UKM_HOSTNAME . '/playback:file/'. $_GET['file'] .'/'. $_GET['pl_id'] .'/');
 
-$file = dirname( __FILE__ ) .'/upload/data/'. $file['pb_season'] .'/'. $file['pl_id'] . '/'. $file['pb_file'];
+
+$file = dirname( __FILE__ ) .'/upload/data/'. $filedata['pb_season'] .'/'. $filedata['pl_id'] . '/'. $filedata['pb_file'];
 
 if (file_exists($file)) {
     header('Content-Description: File Transfer');
