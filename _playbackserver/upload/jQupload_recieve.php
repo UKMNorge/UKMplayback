@@ -73,6 +73,7 @@ error_log('File extension:' . $file_ext);
 
 	################################################
 	## CALCULATE NEW FILENAME OF FILE
+	## Rewrite 20. april 2016 fordi scandir ikke skjønner at 10 er større enn 9.
 	
 	$file_path = DIR_DATA . $SEASON .'/'. $PL_ID.'/' ;
 	
@@ -83,18 +84,23 @@ error_log('File extension:' . $file_ext);
 	
 	$target_dir_files = scandir( $file_path, SCANDIR_SORT_DESCENDING );
 	if( sizeof( $target_dir_files ) == 0 ) {
-		$num = 1;
+		$file_num = 1;
 	} else {
-		$last_file = $target_dir_files[0];
-		$last_file_num = explode($filenum_separator, $last_file);
-		$last_file_num = explode('.', $last_file_num[1]);
-		$last_file_num = (int) $last_file_num[0];
-		$num = ++$last_file_num;
+		$highest_file_num = 1;
+		foreach ($target_dir_files as $file) {
+			$num = explode($filenum_separator, $file);
+			$num = explode(‘.’ , $num[1]);
+			$num = $num[0];
+			if ( $num > $highest_file_num ) {
+				$highest_file_num = $num;
+			}
+		}
 	}
+	$file_num = (int)$highest_file_num+1;
+	$file_name = ‘UKMplayback_’ . $SEASON . ‘_pl’ . $PL_ID . $filenum_separator . $file_num . $file_ext;
 	
-	$file_name = 'UKMplayback_'.$SEASON .'_pl'. $PL_ID . $filenum_separator . $num .$file_ext;
-error_log('File name:' . $file_name);
-			
+	error_log('File name:' . $file_name);
+
 	###################################################
 	## CALCULATE THE REAL WIDTH AND HEIGHT BASED ON UPLOADED FILE
 	$file_uploaded = DIR_UPLOAD.$data_object->name;
