@@ -2,8 +2,8 @@
 ini_set("log_errors", 1);
 #ini_set('display_errors', 1);
 #ini_set("error_log", dirname(__FILE__).'/error_log');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+#error_reporting(E_ALL);
+#ini_set('display_errors', 1);
 
 require_once('jQupload_handler.php');
 
@@ -105,7 +105,7 @@ error_log('File extension:' . $file_ext);
 		$highest_file_num = 1;
 		foreach ($target_dir_files as $file) {
 			$num = explode($filenum_separator, $file);
-			$num = explode(‘.’ , $num[1]);
+			$num = explode('.' , $num[1]);
 			$num = $num[0];
 			if ( $num > $highest_file_num ) {
 				$highest_file_num = $num;
@@ -113,7 +113,7 @@ error_log('File extension:' . $file_ext);
 		}
 	}
 	$file_num = (int)$highest_file_num+1;
-	$file_name = ‘UKMplayback_’ . $SEASON . ‘_pl’ . $PL_ID . $filenum_separator . $file_num . $file_ext;
+	$file_name = 'UKMplayback_' . $SEASON . '_pl' . $PL_ID . $filenum_separator . $file_num . $file_ext;
 	
 	error_log('File name:' . $file_name);
 
