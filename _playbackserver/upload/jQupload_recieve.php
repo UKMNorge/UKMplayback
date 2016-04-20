@@ -2,20 +2,36 @@
 ini_set("log_errors", 1);
 #ini_set('display_errors', 1);
 #ini_set("error_log", dirname(__FILE__).'/error_log');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 require_once('jQupload_handler.php');
+
+define('ACCESS_HEADER', 'http://ukm.no');
+
+// SET HEADERS MANUALLY, BECAUSE IF UPLOAD FAILS, IT SKIPS THE HEADERS AND CRASHES IT ALL...
+header('Access-Control-Allow-Origin: '.ACCESS_HEADER);
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: OPTIONS,HEAD,GET,POST,PUT,PATCH,DELETE');
+header('Access-Control-Allow-Headers: Content-Type,Content-Range,Content-Disposition');
 
 define('DIR_UPLOAD', dirname(__FILE__). '/upload_temp/');
 define('DIR_DATA', dirname(__FILE__). '/data/');
 
 error_log('UPLOAD START');
 
+#error_log( var_export( $_SERVER['REQUEST_METHOD'], true ) );
+#error_log( var_export( $_POST, true ) );
+#error_log( var_export( $_FILES, true ) );
+#error_log( 'UPLOAD_HANDLE' );
 	$upload_handler = new UploadHandler(array('upload_dir' => DIR_UPLOAD,
-											  'access_control_allow_origin'=>'http://ukm.no',
+											  'access_control_allow_origin'=>ACCESS_HEADER,
 											  'access_control_allow_credentials'=>true
 											 )
 										);
-
+	$upload_handler->head();
+	error_log('UPLOAD_HANDLED');
+	
 	################################################
 	## GET THE DATA ARRAY FOR FURTHER MANIPULATING
 	$data = json_decode($upload_handler->get_body());
@@ -29,7 +45,7 @@ error_log( var_export( $_FILES, true ) );
 	if(empty($data_object->size)) {
 		$error = new stdClass;
 		$error->success = false;
-		$error->message = 'Det er en feil med filstørrelsen. Dette kan være en feil i nettleseren din, eller fordi filen er skadet og inneholder feil informasjon om egen filstørrelse.';
+		$error->message = utf8_encode('Det er en feil med filstørrelsen. Dette kan være en feil i nettleseren din, eller fordi filen er skadet og inneholder feil informasjon om egen filstørrelse.');
 		$error->data = $data;
 error_log('UPLOAD END DUE TO FILESIZE BUG');
 		die(json_encode($error));
