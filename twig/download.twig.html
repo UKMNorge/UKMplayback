@@ -4,10 +4,15 @@
 	<h2>Last ned alle filer</h2>
 	
 	<ol class="list-unstyled">
-		{% embed "report.twig.html" with { data: alle_filer, name: 'alle filer tilknyttet min mønstring' } %}{% endembed %}
+		{% if har_filer %}
+			{% embed "report.twig.html" with { data: alle_filer, name: 'alle filer tilknyttet min mønstring' } %}{% endembed %}
 
-		{% for forestilling in forestillinger %}
-			{% embed "report.twig.html" with { data: forestilling } %}{% endembed %}	
-		{% endfor %}
+			{% for forestilling in forestillinger %}
+				{% embed "report.twig.html" with { data: forestilling } %}{% endembed %}	
+			{% endfor %}
+		{% else %}
+			<p><strong>Det er ikke lastet opp noen playback-filer til mønstringen din!</strong></p>
+			<p>Hvis du mener dette er feil, ta kontakt med UKM Support.</p>
+		{% endif %}
 	</ol>	
 {% endblock %}

@@ -39,6 +39,7 @@ $jsondata = new stdClass();
 $jsondata->filename = 'UKM Playback '. $m->g('pl_name');
 $jsondata->files = $files;
 
+$INFOS['har_filer'] = !empty($files);
 // Exchange filelist for zipfile
 $curl = new UKMCURL();
 $curl->timeout(60);
