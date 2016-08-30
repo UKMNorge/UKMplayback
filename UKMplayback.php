@@ -79,6 +79,7 @@ function UKMplayback() {
 		require_once('controller/download.controller.php');
 	}
 	
+	require_once('controller/status.controller.php');
 	
 	$INFOS['action'] = $_GET['action'];
 	$INFOS['tab_active'] = $_GET['action'];
