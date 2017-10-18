@@ -20,7 +20,7 @@ require_once('UKM/curl.class.php');
 // KONTAKT SERVER
 $curl_playback = new UKMCURL();
 $curl_playback->timeout(2);
-$status_playback = $curl_playback->request('http://playback.'. UKM_HOSTNAME .'/api/status.php');
+$status_playback = $curl_playback->request('https://playback.'. UKM_HOSTNAME .'/api/status.php');
 
 // FÅR IKKE KONTAKT
 if(!$status_playback) {

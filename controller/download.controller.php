@@ -43,7 +43,7 @@ $INFOS['har_filer'] = !empty($files);
 // Exchange filelist for zipfile
 $curl = new UKMCURL();
 $curl->timeout(60);
-$INFOS['alle_filer'] = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
+$INFOS['alle_filer'] = $curl->json( $jsondata )->process('https://playback.ukm.no/zipMePlease/');
 
 #var_dump( $curl );
 
@@ -77,7 +77,7 @@ foreach( $hendelser as $con ) {
 		// Exchange filelist for zipfile
 		$curl = new UKMCURL();
 		$curl->timeout(60);
-		$viewdata = $curl->json( $jsondata )->process('http://playback.ukm.no/zipMePlease/');
+		$viewdata = $curl->json( $jsondata )->process('https://playback.ukm.no/zipMePlease/');
 		if( !$viewdata ) {
 			$viewdata = new stdClass();
 			$viewdata->success = false;

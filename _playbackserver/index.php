@@ -10,7 +10,7 @@ require_once('UKM/curl.class.php');
 $curl = new UKMCURL();
 $curl->timeout(10);
 
-$filedata = $curl->request('http://api.' . UKM_HOSTNAME . '/playback:file/'. $_GET['file'] .'/'. $_GET['pl_id'] .'/');
+$filedata = $curl->request('https://api.' . UKM_HOSTNAME . '/playback:file/'. $_GET['file'] .'/'. $_GET['pl_id'] .'/');
 
 #var_dump( $curl );
 #var_dump( $filedata );

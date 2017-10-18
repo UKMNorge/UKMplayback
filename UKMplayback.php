@@ -20,7 +20,7 @@ if(is_admin()) {
 function UKMplayback_menu() {
 	$pltype = get_option('site_type');
 	if( $pltype == 'land' || $pltype == 'kommune' || $pltype == 'fylke' ) {
-		UKM_add_menu_page('monstring','Playback', 'Playback', 'ukm_playback', 'UKMplayback','UKMplayback', 'http://ico.ukm.no/music-menu.png', 16);
+		UKM_add_menu_page('monstring','Playback', 'Playback', 'ukm_playback', 'UKMplayback','UKMplayback', '//ico.ukm.no/music-menu.png', 16);
 		UKM_add_scripts_and_styles('UKMplayback', 'UKMplayback_scripts_and_styles' );
 	}
 }
@@ -99,7 +99,7 @@ function UKMplayback_scripts_and_styles(){
 	wp_enqueue_style('UKMresources_tabs');
 
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('jqueryGoogleUI', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
+	wp_enqueue_script('jqueryGoogleUI', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
 
 	wp_enqueue_style( 'blueimp-gallery-css', plugin_dir_url( __FILE__ ) . 'jqueryuploader/css/blueimp-gallery.min.css');
 
