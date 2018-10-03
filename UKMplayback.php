@@ -11,12 +11,19 @@ Author URI: http://www.ukm-norge.no
 if(is_admin()) {
 	require_once('UKM/inc/handlebars.inc.php');
 	add_action('UKM_admin_menu', 'UKMplayback_menu');
+	add_filter('UKM_admin_menu_conditions', 'UKMplayback_menu_conditions');
 	
 	add_action('wp_ajax_UKMplayback_load', 'UKMplayback_ajax_load');
 	add_action('wp_ajax_UKMplayback_action', 'UKMplayback_ajax_action');
 
 }
 
+//	add_filter('UKM_admin_menu_conditions', 'UKMplayback_menu_conditions');
+function UKMplayback_menu_conditions( $_CONDITIONS ) {
+	return array_merge( $_CONDITIONS, 
+		['UKMplayback' => 'monstring_har_deltakere']
+	);
+}
 function UKMplayback_menu() {
 	$pltype = get_option('site_type');
 	if( $pltype == 'land' || $pltype == 'kommune' || $pltype == 'fylke' ) {
