@@ -16,11 +16,16 @@ $filedata = $curl->request('https://api.' . UKM_HOSTNAME . '/playback:file/'. $_
 #var_dump( $filedata );
 $file = dirname( __FILE__ ) .'/upload/data/'. $filedata->pb_season .'/'. $filedata->pl_id . '/'. $filedata->pb_file;
 
-var_dump( $file );
+if( isset( $_GET['name'] ) && !empty( $_GET['name'] ) ) {
+	$name = $_GET['name'];
+} else {
+	$name = basename( $file );
+}
+
 if (file_exists($file)) {
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename='.basename($file));
+    header('Content-Disposition: attachment; filename='.$name);
     header('Expires: 0');
     header('Cache-Control: must-revalidate');
     header('Pragma: public');
