@@ -13,7 +13,9 @@
 				{% for playback in innslag.playback %}
 					<tr>
 						<td class="col-xs-4">
-							<strong>{{playback.name}}</strong>
+							<a href="?page={{ GET('page') }}&action=edit&id={{playback.id}}">
+								<strong>{{playback.name}}</strong>
+							</a>
 							<br />
 							<small>{{playback.file}}</small>
 						</td>
