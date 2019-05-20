@@ -4,6 +4,7 @@ if( isset( $_POST['submit_playback'] ) ) {
 	require_once('UKM/innslag.class.php');
 
 	$INFOS['message'] = ['level' => 'success'];
+	$innslag = new innslag( $_POST['b_id'] );
 
 	if( isset( $_POST['playback_id'] ) ) {
 		$sql = new SQLins('ukm_playback', ['pb_id' => $_POST['playback_id']]);
@@ -23,7 +24,6 @@ if( isset( $_POST['submit_playback'] ) ) {
 	$sql->add('pb_description', $_POST['description']);
 	$res = $sql->run();
 	
-	$innslag = new innslag( $_POST['b_id'] );
 		
 	if( !$res || $res == -1 ) {
 		$INFOS['message'] = array('level' => 'danger',
