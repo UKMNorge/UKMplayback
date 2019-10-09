@@ -1,0 +1,47 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <div class="clearfix"></div>
+
+    <h4>Innslag på din mønstring som har tilknyttede mediefiler</h4>
+
+    <ul class="list-unstyled">
+        {% for innslag in arrangement.getInnslag().getAll() if innslag.getPlayback().getAntall() > 0 %}
+            <li>
+                <h3>{{innslag.getNavn()}}</h3>
+                <table class="table table-striped">
+                    {% for playback in innslag.getPlayback().getAll() %}
+                        <tr>
+                            <td class="col-xs-4">
+                                <a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getIdÆ()}}">
+                                    <img src="//ico.ukm.no/pencil-32.png" width="12"/>
+                                    <strong>{{playback.getNavn()}}</strong>
+                                </a>
+                                <br/>
+                                <small>{{playback.getFil()}}</small>
+                            </td>
+                            <td class="col-xs-4">{{playback.getBeskrivelse()}}</td>
+                            <td class="col-xs-2">
+                                <a href="{{ playback.geturl() }}" target="_blank">
+                                    <img src="//ico.ukm.no/download-32.png" width="25"/>
+                                    <small>Last ned</small>
+                                </a>
+                            </td>
+                            {% if playback.getArrangementId() == arrangement.getId() %}
+                                <td class="col-xs-2">
+                                    <a href="?page=UKMplayback&delete_id={{playback.getId()}}&delete_b_id={{innslag.getId()}}" class="PBdel">
+                                        <img src="//ico.ukm.no/delete-256.png" width="25"/>
+                                        <small>Slett</small>
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </li>
+        {% else %}
+            <li class="alert alert-info">Ingen innslag på din mønstring har opplastede playbackfiler</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

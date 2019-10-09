@@ -1,14 +1,14 @@
 <?php
-require_once('UKM/monstring.class.php');
-require_once('UKM/forestilling.class.php');
-require_once('UKM/innslag.class.php');
+
+use UKMNorge\Arrangement\Arrangement;
+
+require_once('UKM/Autoloader.php');
 require_once('UKM/curl.class.php');
 
 unset($INFOS['innslag']);
 
-$m = new monstring( get_option('pl_id') );
+$arrangement = new Arrangement( (Int) get_option('pl_id') );
 
-$alle_innslag = $m->innslag();
 $hendelser = $m->concerts();
 
 ob_start();
@@ -21,9 +21,7 @@ flush();
 
 // ALLE INNSLAG PÅ MØNSTRINGEN
 $files = array();
-foreach( $alle_innslag as $inn ) {
-	$innslag = new innslag( $inn['b_id'] );
-	
+foreach( $arrangement->getInnslag()->getAll() as $inn ) {
 	if( $innslag->har_playback() ) {
 		$playback = $innslag->playback();
 		foreach( $playback as $i => $pb ) {
