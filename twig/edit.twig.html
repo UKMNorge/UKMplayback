@@ -1,37 +1,34 @@
-{% extends "layout.twig.html" %}
-
-{% block content %}
+{% extends "layout.twig.html" %} {% block content %}
 
 <div class="clearfix"></div>
 
-<h2>Rediger {{ playback.navn }}</h2>
+<h2>Rediger {{ playback.getNavn() }}</h2>
 
 <form action="?page=UKMplayback" method="post">
-	<input type="hidden" name="playback_id" value="{{ playback.id }}" />
-	<div class="form-group">
-		<div class="form-group">
-			<label>Innslag:</label>
-			{{ innslag.getNavn() }}
-		</div>
-	</div>
+    <input type="hidden" name="playback_id" value="{{ playback.id }}" />
+    <div class="form-group">
+        <div class="form-group">
+            <label>Innslag:</label> {{ innslag.getNavn() }}
+        </div>
+    </div>
 
-	<div class="form-group">
-		<div class="group">
-			<label>Låtens tittel</label>
-			<input type="text" name="name" class="form-control" value="{{ playback.name }}" placeholder="" />
-			<p>(Navnet på framføringen som lydsporet hører til)</p>
-		</div>
-	</div>
+    <div class="form-group">
+        <div class="group">
+            <label>Låtens tittel</label>
+            <input type="text" name="name" class="form-control" value="{{ playback.name }}" placeholder="" />
+            <p>(Navnet på framføringen som lydsporet hører til)</p>
+        </div>
+    </div>
 
-	<div class="form-group">
-		<div class="group">
-			<label>Eventuelle forklaringer / kommentarer</label>
-			<textarea name="description" class="form-control">{{ playback.description }}</textarea>
-		</div>
-	</div>
-	<div class="group">
-		<input name="submit_playback" class="button-primary" id="submitbutton" type="submit" value="Lagre" />
-	</div>
+    <div class="form-group">
+        <div class="group">
+            <label>Eventuelle forklaringer / kommentarer</label>
+            <textarea name="description" class="form-control">{{ playback.description }}</textarea>
+        </div>
+    </div>
+    <div class="group">
+        <input name="submit_playback" class="button-primary" id="submitbutton" type="submit" value="Lagre" />
+    </div>
 </form>
 
 <div class="clearfix"></div>

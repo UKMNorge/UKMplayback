@@ -1,9 +1,11 @@
 <h1>Playback / singback</h1>
 
-{% embed "status.html.twig" %}{% endembed %}
+{% include "wp_modul.flashbag.html.twig" %}
+
+Action: {{ action }}
 
 <div class="UKM_tabs">
-	<a href="?page=UKMplayback&action=list" {{ tab_active == 'list' ? 'class="active"' : ''}}>
+	<a href="?page=UKMplayback&action=list" {{ action == 'list' ? 'class="active"' : ''}}>
 		<div>
 			<span class="tab_header">Vis filer</span>
 			<img src="//ico.ukm.no/music-32.png" width="25"  border="0" /><br />
@@ -11,7 +13,7 @@
 		</div>
 	</a>
 
-	<a href="?page=UKMplayback&action=upload" {{ tab_active == 'upload' ? 'class="active"' : ''}}>
+	<a href="?page=UKMplayback&action=upload" {{ action == 'upload' ? 'class="active"' : ''}}>
 		<div>
 			<span class="tab_header">Last opp fil</span>
 			<img src="//ico.ukm.no/fancyplus-32.png" width="25"  border="0" /><br />
@@ -19,7 +21,7 @@
 		</div>
 	</a>
 	
-	<a href="?page=UKMplayback&action=download" {{ tab_active == 'download' ? 'class="active"' : ''}}>
+	<a href="?page=UKMplayback&action=download" {{ action == 'download' ? 'class="active"' : ''}}>
 		<div>
 			<span class="tab_header">Last ned</span>
 			<img src="//ico.ukm.no/delivery-32.png" width="25"  border="0" /><br />

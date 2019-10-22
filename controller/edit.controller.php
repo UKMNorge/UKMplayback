@@ -1,9 +1,11 @@
 <?php
-require_once('UKM/playback.class.php');
-require_once('UKM/innslag.class.php');
 
-$playback = new playback( $_GET['id'] );
+use UKMNorge\Arrangement\Arrangement;
 
-$INFOS['innslag'] = new innslag_v2( $playback->b_id );
+require_once('UKM/Autoloader.php');
 
-$INFOS['playback'] = $playback;
+$arrangement = new Arrangement((int) get_option('pl_id'));
+$innslag = $arrangement->getInnslag()->get($_GET['innslag']);
+
+$INFOS['innslag'] = $innslag;
+$INFOS['playback'] = $innslag->getPlayback()->get($_GET['id']);
