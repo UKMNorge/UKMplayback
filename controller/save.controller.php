@@ -7,16 +7,14 @@ use UKMNorge\Database\SQL\Update;
 if( isset( $_POST['submit_playback'] ) ) {
 	$arrangement = new Arrangement( get_option('pl_id') );
 
-	$INFOS['message'] = ['level' => 'success'];
 	$innslag = $arrangement->getInnslag()->get( $_POST['b_id'] ); // new innslag(  );
 
 	if( isset( $_POST['playback_id'] ) ) {  //TODO: fix me
 		$sql = new Update('ukm_playback', ['pb_id' => $_POST['playback_id']]);
-		$INFOS['message']['header'] = 'Lydfil oppdatert!';
-		$INFOS['message']['body'] = 'Oppdatering av navn og beskrivelse er lagret.';
+
+		UKMplayback::getFlash()->success("Oppdatering av navn og beskrivelse er lagret.");
 	} else {
-		$INFOS['message']['header'] = 'Lydfil lagt til!';
-		$INFOS['message']['body'] = 'Lydfilen er nå lastet opp og knyttet til innslaget "' . $innslag->getNavn() . '"';
+		UKMplayback::getFlash()->success('Lydfilen er nå lastet opp og knyttet til innslaget "' . $innslag->getNavn() . '"');
 
 		$sql = new Insert('ukm_playback');
 		$sql->add('pl_id', $_POST['pl_id']);
@@ -30,8 +28,6 @@ if( isset( $_POST['submit_playback'] ) ) {
 	
 		
 	if( !$res || $res == -1 ) {
-		$INFOS['message'] = array('level' => 'danger',
-								  'header' => 'Lydfil ble ikke lagt til!',
-								  'body' => 'En ukjent feil gjorde at lydfilen for "' . $innslag->getNavn() . '" ikke ble lagret');
+		UKMplayback::getFlash()->error('En ukjent feil gjorde at lydfilen for "' . $innslag->getNavn() . '" ikke ble lagret');
 	}
 }

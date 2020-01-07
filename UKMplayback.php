@@ -44,7 +44,6 @@ class UKMplayback extends Modul
 
     public static function save( $getParamSave ) {
         static::include('controller/save.controller.php');
-
     }
 
     public static function scripts_and_styles()

@@ -6,8 +6,9 @@
 
 <h2>Rediger {{ playback.getNavn() }}</h2>
 
-<form action="?page=UKMplayback" method="post">
-    <input type="hidden" name="playback_id" value="{{ playback.id }}" />
+<form action="?page=UKMplayback&save=true" method="post">
+    <input type="hidden" name="playback_id" value="{{ playback.getId() }}" />
+    <input type="hidden" name="b_id" value="{{ innslag.getId() }}" />
     <div class="form-group">
         <div class="form-group">
             <label>Innslag:</label> {{ innslag.getNavn() }}

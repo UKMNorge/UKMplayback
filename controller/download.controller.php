@@ -28,10 +28,11 @@ foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
 	if( $playbacks->getAntall() > 0 ) {
 
 		foreach( $playbacks->getAll() as $i => $pb ) {
+			// var_dump($pb);
 			/** @var UKMNorge\Innslag\Playback\Playback $pb */
 
 			// $path = $pb->relative_file();
-			$path = $pb->getPath();
+			$path = $pb->getPath() . $pb->getFil();
 
 			// $name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
 			$name = $innslag->getNavn() . ' FIL ' . ($i+1) . $pb->getExtension();
@@ -46,61 +47,62 @@ $jsondata = new stdClass();
 $jsondata->filename = 'UKM Playback '. $arrangement->getNavn(); // $m->g('pl_name');
 $jsondata->files = $files;
 
-$INFOS['har_filer'] = !empty($files);
+
+UKMplayback::addViewData('har_filer', !empty($files));
 // Exchange filelist for zipfile
 $curl = new UKMCURL();
-$curl->timeout(60);
-$INFOS['alle_filer'] = $curl->json( $jsondata )->process('https://playback.ukm.no/zipMePlease/');
+$curl->timeout(5); //TODO: CHANGE BACK TO 60
+UKMplayback::addViewData('alle_filer', $curl->json( $jsondata )->process('https://playback.' . UKM_HOSTNAME . '/zipMePlease/') );
 
 #var_dump( $curl );
 
-foreach( $arrangement->getProgram()->getAbsoluteAll() as $hendelse ) {
-	/** @var UKMNorge\Arrangement\Program\Hendelse $hendelse  */
+// foreach( $arrangement->getProgram()->getAbsoluteAll() as $hendelse ) {
+// 	/** @var UKMNorge\Arrangement\Program\Hendelse $hendelse  */
 
-	$rekkefolge = $hendelse->getInnslag()->getAll();
+// 	$rekkefolge = $hendelse->getInnslag()->getAll();
 
 
 
-	echo '<p class="hideOnDocReady">Playbackfiler for '. $hendelse->getNavn() .'</p>';
-	ob_flush();
-	flush();
+// 	echo '<p class="hideOnDocReady">Playbackfiler for '. $hendelse->getNavn() .'</p>';
+// 	ob_flush();
+// 	flush();
 
-	// Sjekk filer for forestillingen
-	$files = array();
-	foreach( $rekkefolge as $int => $innslag ) {
-		/** @var UKMNorge\Innslag\Innslag $innslag */
+// 	// Sjekk filer for forestillingen
+// 	$files = array();
+// 	foreach( $rekkefolge as $int => $innslag ) {
+// 		/** @var UKMNorge\Innslag\Innslag $innslag */
 		
 
-		$playbacks = $innslag->getPlayback();
+// 		$playbacks = $innslag->getPlayback();
 		
-		if( $playbacks->getAntall() > 0 ) {
-			foreach( $playbacks->getAll() as $i => $pb ) {
-				/** @var UKMNorge\Innslag\Playback\Playback $pb */
-				$path = $pb->getPath();
-				$name = $innslag->getNavn() .' FIL '. ($i+1) . $pb->getExtension();
-				$files[ $path ] = $name;
-			}
-		}
-	}
-	if( sizeof( $files ) > 0 ) {
-		// Prepare filelist as JSON
-		$jsondata = new stdClass();
-		$jsondata->filename = 'UKM Playback '. $arrangement->getNavn() .' '. $hendelse->getNavn();
-		$jsondata->files = $files;
+// 		if( $playbacks->getAntall() > 0 ) {
+// 			foreach( $playbacks->getAll() as $i => $pb ) {
+// 				/** @var UKMNorge\Innslag\Playback\Playback $pb */
+// 				$path = $pb->getPath();
+// 				$name = $innslag->getNavn() .' FIL '. ($i+1) . $pb->getExtension();
+// 				$files[ $path ] = $name;
+// 			}
+// 		}
+// 	}
+// 	if( sizeof( $files ) > 0 ) {
+// 		// Prepare filelist as JSON
+// 		$jsondata = new stdClass();
+// 		$jsondata->filename = 'UKM Playback '. $arrangement->getNavn() .' '. $hendelse->getNavn();
+// 		$jsondata->files = $files;
 		
-		// Exchange filelist for zipfile
-		$curl = new UKMCURL();
-		$curl->timeout(60);
-		$viewdata = $curl->json( $jsondata )->process('https://playback.ukm.no/zipMePlease/');
-		if( !$viewdata ) {
-			$viewdata = new stdClass();
-			$viewdata->success = false;
-			$viewdata->error = 'Det tok for lang tid å generere filen. Kontakt UKM Norge';
-		}
-		$viewdata->name = $hendelse->getNavn();		
-		$INFOS['forestillinger'][] = $viewdata;		
-	}
-}
+// 		// Exchange filelist for zipfile
+// 		$curl = new UKMCURL();
+// 		$curl->timeout(5); //TODO: CHANGE BACK TO 60
+// 		$viewdata = $curl->json( $jsondata )->process('https://playback.' . UKM_HOSTNAME . '/zipMePlease/');
+// 		if( !$viewdata ) {
+// 			$viewdata = new stdClass();
+// 			$viewdata->success = false;
+// 			$viewdata->error = 'Det tok for lang tid å generere filen. Kontakt UKM Norge';
+// 		}
+// 		$viewdata->name = $hendelse->getNavn();		
+// 		$INFOS['forestillinger'][] = $viewdata;		
+// 	}
+// }
 
 
 echo '<script>jQuery(document).on(\'ready\', function(){jQuery(\'.hideOnDocReady\').slideUp()});</script>';
