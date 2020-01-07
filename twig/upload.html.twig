@@ -15,7 +15,7 @@
 
 
     <div class="videoopplaster col-xs-12 col-sm-6">
-        <form action="?page=UKMplayback" method="post">
+        <form action="?page=UKMplayback&save=true" method="post">
 
             <div class="form-group">
                 <div id="filechooser" style="border: none;">
@@ -41,8 +41,8 @@
                     <label>Innslag:</label>
                     <select name="b_id" id="b_id" class="form-control">
                         <option value="0" selected="selected" disabled="disalbed">Velg innslag</option>
-                        {% for inn in innslag %}
-                        <option value="{{inn.b_id}}">{{inn.b_name}}</option>
+                        {% for innslag in arrangement.getInnslag().getAll() %}
+                        <option value="{{ innslag.getId() }}">{{ innslag.getNavn() }} ({{ innslag.getType().getNavn() }})</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -62,8 +62,8 @@
                     <textarea name="description" class="form-control"></textarea>
                 </div>
             </div>
-            <input type="hidden" name="season" id="season" value="{{monstring.season}}" />
-            <input type="hidden" name="pl_id" id="pl_id" value="{{monstring.pl_id}}" />
+            <input type="hidden" name="season" id="season" value="{{ arrangement.getSesong() }}" />
+            <input type="hidden" name="pl_id" id="pl_id" value="{{ arrangement.getId() }}" />
             <input type="hidden" id="filename" value="demofile3.bogus" name="filename" />
             <div class="group">
                 <input name="submit_playback" class="button-primary" id="submitbutton" type="submit" value="Lagre" disabled="disabled" />

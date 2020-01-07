@@ -2,7 +2,7 @@ jQuery(document).ready(function(){
     jQuery('#fileupload_playback').fileupload({
         // Uncomment the following to send cross-domain cookies:
         xhrFields: {withCredentials: true},
-        url: 'https://playback.ukm.no/upload/jQupload_recieve.php',
+        url: 'https://playback.'+ UKM_HOSTNAME +'/upload/jQupload_recieve.php',
         fileTypes: '^audio\/(.)+',
         autoUpload: true,
         formData: {'season': jQuery('#season').val(),
@@ -30,7 +30,7 @@ jQuery(document).ready(function(){
    if(jQuery('#fileupload_playback').html() !== 'undefined' && jQuery('#fileupload_playback').html() !== undefined) {
 	    if (jQuery.support.cors) {
 	        jQuery.ajax({
-	            url: 'https://playback.ukm.no/upload/jQupload_cors.php',
+	            url: 'https://playback.' + UKM_HOSTNAME + '/upload/jQupload_cors.php',
 	            type: 'HEAD'
 	        }).fail(function () {
 	        	var result = {'success': false,

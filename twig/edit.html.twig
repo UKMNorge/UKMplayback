@@ -1,6 +1,8 @@
-{% extends "layout.twig.html" %} {% block content %}
+{% extends "layout.html.twig" %} {% block content %}
 
 <div class="clearfix"></div>
+
+{{ dump( playback ) }}
 
 <h2>Rediger {{ playback.getNavn() }}</h2>
 
@@ -15,7 +17,7 @@
     <div class="form-group">
         <div class="group">
             <label>Låtens tittel</label>
-            <input type="text" name="name" class="form-control" value="{{ playback.name }}" placeholder="" />
+            <input type="text" name="name" class="form-control" value="{{ playback.getNavn() }}" placeholder="" />
             <p>(Navnet på framføringen som lydsporet hører til)</p>
         </div>
     </div>
@@ -23,7 +25,7 @@
     <div class="form-group">
         <div class="group">
             <label>Eventuelle forklaringer / kommentarer</label>
-            <textarea name="description" class="form-control">{{ playback.description }}</textarea>
+            <textarea name="description" class="form-control">{{ playback.getBeskrivelse() }}</textarea>
         </div>
     </div>
     <div class="group">

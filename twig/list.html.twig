@@ -13,7 +13,7 @@
                     {% for playback in innslag.getPlayback().getAll() %}
                         <tr>
                             <td class="col-xs-4">
-                                <a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getIdÆ()}}">
+                                <a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getId()}}">
                                     <img src="//ico.ukm.no/pencil-32.png" width="12"/>
                                     <strong>{{playback.getNavn()}}</strong>
                                 </a>

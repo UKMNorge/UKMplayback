@@ -2,9 +2,6 @@
 
 use UKMNorge\Arrangement\Arrangement;
 
-require_once('UKM/innslag.class.php');
-
-
 UKMplayback::addViewData('arrangement', new Arrangement( get_option( 'pl_id' ) ));
 
 // $pl = new monstring( get_option('pl_id') );
