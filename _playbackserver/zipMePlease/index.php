@@ -1,4 +1,7 @@
 <?php
+
+use UKMNorge\File\Zip;
+
 if ( $_SERVER['REQUEST_METHOD'] != 'POST' ){
 	error_log('RECIEVED NOT POST DATA. DIE');
 }
@@ -11,7 +14,7 @@ if( !file_exists( ZIP_WRITE_PATH ) ) {
 }
 
 // Create zip (and overwrite existing file)
-$zip = new zip( $data->filename, true );
+$zip = new Zip( $data->filename, true );
 $zip->debugMode();
 
 foreach( $data->files as $path => $name ) {
