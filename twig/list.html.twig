@@ -1,7 +1,5 @@
 {% extends "layout.html.twig" %}
 
-{% set isCritical = STATUS.level == 'critical' %}
-
 {% block content %}
     <div class="clearfix"></div>
 
@@ -24,7 +22,7 @@
                             </td>
                             <td class="col-xs-4">{{playback.getBeskrivelse()}}</td>
                             <td class="col-xs-2">
-                                <a href="{{ playback.geturl() }}" target="_blank">
+                                <a href="{{ playback.getUrl() }}" target="_blank">
                                     <img src="//ico.ukm.no/download-32.png" width="25"/>
                                     <small>Last ned</small>
                                 </a>
