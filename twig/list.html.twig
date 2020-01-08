@@ -1,5 +1,7 @@
 {% extends "layout.html.twig" %}
 
+{% set isCritical = STATUS.level == 'critical' %}
+
 {% block content %}
     <div class="clearfix"></div>
 

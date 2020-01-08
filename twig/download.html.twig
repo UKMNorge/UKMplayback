@@ -1,18 +1,21 @@
 {% extends "layout.html.twig" %}
 
-{% block content %}
-	<h2>Last ned alle filer</h2>
-	
-	<ol class="list-unstyled">
-		{% if har_filer %}
-			{% embed "report.html.twig" with { data: alle_filer, name: 'alle filer tilknyttet min mønstring' } %}{% endembed %}
 
-			{% for forestilling in forestillinger %}
-				{% embed "report.html.twig" with { data: forestilling } %}{% endembed %}	
-			{% endfor %}
-		{% else %}
-			<p><strong>Det er ikke lastet opp noen playback-filer til mønstringen din!</strong></p>
-			<p>Hvis du mener dette er feil, ta kontakt med UKM Support.</p>
-		{% endif %}
-	</ol>	
+{% block content %}
+    {% if STATUS.level != 'critical' %}
+        <h2>Last ned alle filer</h2>
+        
+        <ol class="list-unstyled">
+            {% if har_filer %}
+                {% embed "report.html.twig" with { data: alle_filer, name: 'alle filer tilknyttet min mønstring' } %}{% endembed %}
+
+                {% for forestilling in forestillinger %}
+                    {% embed "report.html.twig" with { data: forestilling } %}{% endembed %}	
+                {% endfor %}
+            {% else %}
+                <p><strong>Det er ikke lastet opp noen playback-filer til mønstringen din!</strong></p>
+                <p>Hvis du mener dette er feil, ta kontakt med UKM Support.</p>
+            {% endif %}
+        </ol>	
+    {% endif %}
 {% endblock %}

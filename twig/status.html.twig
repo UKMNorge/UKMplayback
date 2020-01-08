@@ -1,18 +1,22 @@
-{% if STATUS.critical.status == true %}
-	<div class="alert alert-error alert-danger alert-block">
-		<h3>Kritisk driftsstatus!</h3>
-		<p>{{STATUS.critical.message}}</p>
-		<p><a href="mailto:support@ukm.no">Kontakt UKM Norge</a></p>
-	</div>
-{% elseif STATUS.warning.status == true %}
-	<div class="alert alert-warning alert-block">
-		<h3>Vi gjør oppmerksom!</h3>
-		<p>{{STATUS.warning.message}}</p>
-		<p><a href="mailto:support@ukm.no">Kontakt UKM Norge</a></p>
-	</div>
-{% elseif STATUS.info.status == true %}
-	<div class="alert alert-info alert-block">
-		<p>{{STATUS.info.message}}</p>
-		<p>Du trenger ikke gjøre noe med dette</p>
-	</div>
+{% if STATUS.status %}
+    {% if STATUS.level == "critical" %}
+        <div class="alert alert-error alert-danger alert-block">
+            <h3>Kritisk driftsstatus!</h3>
+            <p>{{STATUS.message}}</p>
+            <p><a href="mailto:support@ukm.no">Kontakt UKM Norge</a></p>
+        </div>
+    {% elseif STATUS.level == "warning" %}
+        <div class="alert alert-warning alert-block">
+            <h3>Vi gjør oppmerksom!</h3>
+            <p>{{STATUS.message}}</p>
+            <p><a href="mailto:support@ukm.no">Kontakt UKM Norge</a></p>
+        </div>
+    {% elseif STATUS.level == "info" %}
+        <div class="alert alert-info alert-block">
+            <p>{{STATUS.message}}</p>
+            <p>Du trenger ikke gjøre noe med dette</p>
+        </div>
+    {% endif %}
 {% endif %}
+
+

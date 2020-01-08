@@ -46,6 +46,14 @@ class UKMplayback extends Modul
         static::include('controller/save.controller.php');
     }
 
+    public static function renderAdmin()
+    {
+        static::include('controller/status.controller.php');
+        
+        parent::renderAdmin();
+
+    }
+
     public static function scripts_and_styles()
     {
         wp_enqueue_script('handlebars_js');
