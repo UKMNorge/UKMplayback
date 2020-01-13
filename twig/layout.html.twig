@@ -1,8 +1,6 @@
-<h1>Playback / singback</h1>
+<h1>Mediefiler og dokumenter</h1>
 
 {% include "wp_modul.flashbag.html.twig" %}
-
-Action: {{ action }}
 
 <div class="UKM_tabs">
 	<a href="?page=UKMplayback&action=list" {{ action == 'list' ? 'class="active"' : ''}}>
@@ -36,12 +34,7 @@ Action: {{ action }}
 </div>
 
 <div class="UKM_content_wrapper UKMwidth">
-	{% if message is defined %}
-		<div class="alert alert-{{message.level}}">
-			<h4>{{message.header}}</h4>
-			<p>{{message.body|raw}}</p>
-		</div>
-	{% endif %}
+    {% include "status.html.twig" %}
 	{% block content %}
 	{% endblock %}
 </div>

@@ -1,0 +1,85 @@
+{% extends "layout.html.twig" %} {% block content %}
+
+<div class="clearfix"></div>
+
+{% if STATUS.level != 'critical' %}
+
+<h2>Last opp mediefil eller dokument</h2>
+
+    <div class="alert alert-danger">
+        <strong>OBS:</strong> Filnavn med spesialtegn som apostrofer osv vil gjøre at opplastingen stopper uten feilmelding.
+    </div>
+
+    <div id="fileupload_container">
+        <div class="pull-right col-xs-12 col-sm-6" id="fileupload_dropzone">
+            <img src="//ico.ukm.no/grafikk/dropzone.png" />
+        </div>
+
+
+        <div class="videoopplaster col-xs-12 col-sm-6">
+            <form action="?page=UKMplayback&save=true" method="post">
+
+                <div class="form-group">
+                    <div id="filechooser" style="border: none;">
+                        <label>Velg fil</label>
+                        <input id="fileupload_playback" name="files[]" type="file" style="border: none" class="form-control">
+                    </div>
+
+                    <div class="group alert-info" id="uploading" style="display:none;">
+                        <label>Laster opp fil</label>
+                        <progress value="0" max="100" id="uploadprogress" class="progress progress-striped active" style="width: 90%"></progress>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="alert alert-success" id="uploaded" style="display:none;">
+                        <h3>Filen er lastet opp!</h3> 
+                        <strong>Fyll ut skjemaet nedenfor, og trykk lagre!</strong>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <label>Innslag:</label>
+                        <select name="b_id" id="b_id" class="form-control">
+                            <option value="0" selected="selected" disabled="disalbed">Velg innslag</option>
+                            {% for innslag in arrangement.getInnslag().getAll() %}
+                            <option value="{{ innslag.getId() }}">{{ innslag.getNavn() }} ({{ innslag.getType().getNavn() }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="group">
+                        <label>Tittel</label>
+                        <input type="text" name="name" class="form-control" value="" placeholder="" />
+                        <p class="text-muted">
+                            Skriv navnet på tittelen/fremføringen som mediefilen/dokumentet hører til. 
+                            Dette er spesielt viktig for innslag som har flere titler.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="group">
+                        <label>Eventuelle forklaringer / kommentarer</label>
+                        <textarea name="description" class="form-control"></textarea>
+                    </div>
+                </div>
+                <input type="hidden" name="season" id="season" value="{{ arrangement.getSesong() }}" />
+                <input type="hidden" name="pl_id" id="pl_id" value="{{ arrangement.getId() }}" />
+                <input type="hidden" id="filename" value="demofile3.bogus" name="filename" />
+                <div class="group">
+                    <input name="submit_playback"  class="button-primary" id="submitbutton" type="submit" value="Lagre" disabled="disabled" />
+                </div>
+            </form>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+{% endif %}
+<div id="fileupload_message" style="display:none;">
+
+</div>
+{% endblock %}

@@ -9,24 +9,34 @@ unset($INFOS['innslag']);
 
 $arrangement = new Arrangement( (Int) get_option('pl_id') );
 
-$hendelser = $m->concerts();
+
+// $hendelser = $m->concerts();
 
 ob_start();
 echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerer...</h3>
 	<p class="lead hideOnDocReady">Dette kan ta flere minutter!</p>
-		<p class="hideOnDocReady">Alle playbackfiler for mønstringen</p>';
+		<p class="hideOnDocReady">Alle filer for mønstringen</p>';
 ob_flush();
 flush();
 
 
 // ALLE INNSLAG PÅ MØNSTRINGEN
 $files = array();
-foreach( $arrangement->getInnslag()->getAll() as $inn ) {
-	if( $innslag->har_playback() ) {
-		$playback = $innslag->playback();
-		foreach( $playback as $i => $pb ) {
-			$path = $pb->relative_file();
-			$name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
+foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
+	/** @var UKMNorge\Innslag\Innslag $innslag  */
+	$playbacks = $innslag->getPlayback();
+	if( $playbacks->getAntall() > 0 ) {
+
+		foreach( $playbacks->getAll() as $i => $pb ) {
+			// var_dump($pb);
+			/** @var UKMNorge\Innslag\Playback\Playback $pb */
+
+			// $path = $pb->relative_file();
+			$path = $pb->getPath() . $pb->getFil();
+
+			// $name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
+			$name = $innslag->getNavn() . ' FIL ' . ($i+1) . $pb->getExtension();
+
 			$files[ $path ] = $name;
 		}
 	}
@@ -34,57 +44,65 @@ foreach( $arrangement->getInnslag()->getAll() as $inn ) {
 
 // Prepare filelist as JSON
 $jsondata = new stdClass();
-$jsondata->filename = 'UKM Playback '. $m->g('pl_name');
+$jsondata->filename = 'UKM Playback '. $arrangement->getNavn(); // $m->g('pl_name');
 $jsondata->files = $files;
 
-$INFOS['har_filer'] = !empty($files);
+
+UKMplayback::addViewData('har_filer', !empty($files));
 // Exchange filelist for zipfile
 $curl = new UKMCURL();
-$curl->timeout(60);
-$INFOS['alle_filer'] = $curl->json( $jsondata )->process('https://playback.ukm.no/zipMePlease/');
+$curl->timeout(5); //TODO: CHANGE BACK TO 60
+UKMplayback::addViewData('alle_filer', $curl->json( $jsondata )->process('https://playback.' . UKM_HOSTNAME . '/zipMePlease/') );
 
 #var_dump( $curl );
 
-foreach( $hendelser as $con ) {
-	$c = new forestilling( $con['c_id'] );
-	$rekkefolge = $c->concertBands();
-	echo '<p class="hideOnDocReady">Playbackfiler for '. $c->g('c_name') .'</p>';
-	ob_flush();
-	flush();
+// foreach( $arrangement->getProgram()->getAbsoluteAll() as $hendelse ) {
+// 	/** @var UKMNorge\Arrangement\Program\Hendelse $hendelse  */
 
-	// Sjekk filer for forestillingen
-	$files = array();
-	foreach( $rekkefolge as $int => $inn ) {
-		$innslag = new innslag( $inn['b_id'] );
+// 	$rekkefolge = $hendelse->getInnslag()->getAll();
+
+
+
+// 	echo '<p class="hideOnDocReady">Playbackfiler for '. $hendelse->getNavn() .'</p>';
+// 	ob_flush();
+// 	flush();
+
+// 	// Sjekk filer for forestillingen
+// 	$files = array();
+// 	foreach( $rekkefolge as $int => $innslag ) {
+// 		/** @var UKMNorge\Innslag\Innslag $innslag */
 		
-		if( $innslag->har_playback() ) {
-			$playback = $innslag->playback();
-			foreach( $playback as $i => $pb ) {
-				$path = $pb->relative_file();
-				$name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
-				$files[ $path ] = $name;
-			}
-		}
-	}
-	if( sizeof( $files ) > 0 ) {
-		// Prepare filelist as JSON
-		$jsondata = new stdClass();
-		$jsondata->filename = 'UKM Playback '. $m->g('pl_name') .' '. $c->g('c_name');
-		$jsondata->files = $files;
+
+// 		$playbacks = $innslag->getPlayback();
 		
-		// Exchange filelist for zipfile
-		$curl = new UKMCURL();
-		$curl->timeout(60);
-		$viewdata = $curl->json( $jsondata )->process('https://playback.ukm.no/zipMePlease/');
-		if( !$viewdata ) {
-			$viewdata = new stdClass();
-			$viewdata->success = false;
-			$viewdata->error = 'Det tok for lang tid å generere filen. Kontakt UKM Norge';
-		}
-		$viewdata->name = $c->g('c_name');		
-		$INFOS['forestillinger'][] = $viewdata;		
-	}
-}
+// 		if( $playbacks->getAntall() > 0 ) {
+// 			foreach( $playbacks->getAll() as $i => $pb ) {
+// 				/** @var UKMNorge\Innslag\Playback\Playback $pb */
+// 				$path = $pb->getPath();
+// 				$name = $innslag->getNavn() .' FIL '. ($i+1) . $pb->getExtension();
+// 				$files[ $path ] = $name;
+// 			}
+// 		}
+// 	}
+// 	if( sizeof( $files ) > 0 ) {
+// 		// Prepare filelist as JSON
+// 		$jsondata = new stdClass();
+// 		$jsondata->filename = 'UKM Playback '. $arrangement->getNavn() .' '. $hendelse->getNavn();
+// 		$jsondata->files = $files;
+		
+// 		// Exchange filelist for zipfile
+// 		$curl = new UKMCURL();
+// 		$curl->timeout(5); //TODO: CHANGE BACK TO 60
+// 		$viewdata = $curl->json( $jsondata )->process('https://playback.' . UKM_HOSTNAME . '/zipMePlease/');
+// 		if( !$viewdata ) {
+// 			$viewdata = new stdClass();
+// 			$viewdata->success = false;
+// 			$viewdata->error = 'Det tok for lang tid å generere filen. Kontakt UKM Norge';
+// 		}
+// 		$viewdata->name = $hendelse->getNavn();		
+// 		$INFOS['forestillinger'][] = $viewdata;		
+// 	}
+// }
 
 
 echo '<script>jQuery(document).on(\'ready\', function(){jQuery(\'.hideOnDocReady\').slideUp()});</script>';
