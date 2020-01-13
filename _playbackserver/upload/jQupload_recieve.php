@@ -6,8 +6,9 @@ ini_set("log_errors", 1);
 #ini_set('display_errors', 1);
 
 require_once('jQupload_handler.php');
+require_once('UKMconfig.inc.php');
 
-define('ACCESS_HEADER', 'https://ukm.no');
+define('ACCESS_HEADER', 'https://' . UKM_HOSTNAME);
 
 // SET HEADERS MANUALLY, BECAUSE IF UPLOAD FAILS, IT SKIPS THE HEADERS AND CRASHES IT ALL...
 header('Access-Control-Allow-Origin: '.ACCESS_HEADER);

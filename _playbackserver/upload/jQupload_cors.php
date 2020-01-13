@@ -1,8 +1,10 @@
 <?php
+require_once('UKMconfig.inc.php');
+
 ################################################
 ## SET ALL HEADERS AND ACTUALLY PERFORM UPLOAD 
 header('Access-Control-Allow-Headers: true');
-header('Access-Control-Allow-Origin: https://ukm.no');
+header('Access-Control-Allow-Origin: https://' . UKM_HOSTNAME);
 header('Access-Control-Request-Method: OPTIONS, HEAD, GET, POST, PUT, PATCH, DELETE');
 header('Access-Control-Allow-Credentials: true');
 
