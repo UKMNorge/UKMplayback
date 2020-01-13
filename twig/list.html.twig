@@ -3,7 +3,7 @@
 {% block content %}
     <div class="clearfix"></div>
 
-    <h4>Innslag på din mønstring som har tilknyttede mediefiler</h4>
+    <h4>Innslag på din mønstring med tilknyttede mediefiler</h4>
 
     <ul class="list-unstyled">
         {% for innslag in arrangement.getInnslag().getAll()|filter( innslag => innslag.getPlayback().getAntall() > 0) %}
@@ -40,7 +40,7 @@
                 </table>
             </li>
         {% else %}
-            <li class="alert alert-info">Ingen innslag på din mønstring har opplastede playbackfiler</li>
+            <li class="alert alert-info">Ingen innslag på din mønstring har opplastede mediefiler eller dokumenter</li>
         {% endfor %}
     </ul>
 

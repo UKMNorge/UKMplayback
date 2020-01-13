@@ -15,7 +15,7 @@ $arrangement = new Arrangement( (Int) get_option('pl_id') );
 ob_start();
 echo '<h3 class="hideOnDocReady">Vennligst vent, komprimerer...</h3>
 	<p class="lead hideOnDocReady">Dette kan ta flere minutter!</p>
-		<p class="hideOnDocReady">Alle playbackfiler for mønstringen</p>';
+		<p class="hideOnDocReady">Alle filer for mønstringen</p>';
 ob_flush();
 flush();
 

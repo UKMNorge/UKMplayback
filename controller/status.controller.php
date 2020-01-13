@@ -19,24 +19,26 @@ $status_playback = $curl_playback->request('https://playback.'. UKM_HOSTNAME .'/
 if(!$status_playback) {
     $STATUS->level = 'critical';
     $STATUS->status = true;
-    $STATUS->message = "Webserveren får ikke kontakt med playback-serveren.
-                                  Dette gjør at det ikke er mulig å laste opp eller ned playback-filer akkurat nå.
-                                ";
+    $STATUS->message = 
+        'Serveren har litt problemer, så det er ikke mulig å laste opp eller ned mediefiler og dokumenter akkurat nå.'. 
+        '<a href=mailto:support@ukm.no?subject=Playbackserver er nede">Kontakt UKM Norge</a>';
     // $STATUS->critical->status = true;
 // PLAYBACK MANGLER SKRIVERETTIGHETER
 } else {
 	if( !$status_playback->writeable_upload_folder or !$status_playback->writeable_data_folder ) {
         $STATUS->level = 'critical';
 		$STATUS->status = true;
-		$STATUS->message = "Problemer med opplasting av playback og nedlasting av zip-filer.
-									  Serveren har litt problemer, så det er kun mulig å laste ned enkelt-filer.";
+        $STATUS->message = 
+            'Serveren har litt problemer, så det er kun mulig å laste ned enkelt-filer akkurat nå. '.
+            'Opplasting av nye filer, eller nedlasting av zip-filer er dessverre ikke mulig. '.
+            '<a href=mailto:support@ukm.no?subject=Playbackserver er nede">Kontakt UKM Norge</a>';
 	
 	} 
 	if( $status_playback->diskspace < $WARN->diskspace*1024*1024*1024) {
         $disk_human = $status_playback->diskspace / (1024 * 1024 * 1024);
         $STATUS->level = 'warning';
 	    $STATUS->status = true;
-	    $STATUS->message = 'Playbackserveren har kun '. round($disk_human,2) .'GB ledig plass';
+	    $STATUS->message = 'Filserveren har kun '. round($disk_human,2) .'GB ledig plass';
 	}
 }
 

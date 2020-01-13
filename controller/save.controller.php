@@ -9,12 +9,14 @@ if( isset( $_POST['submit_playback'] ) ) {
 
 	$innslag = $arrangement->getInnslag()->get( $_POST['b_id'] ); // new innslag(  );
 
-	if( isset( $_POST['playback_id'] ) ) {  //TODO: fix me
-		$sql = new Update('ukm_playback', ['pb_id' => $_POST['playback_id']]);
-
+	if( isset( $_POST['playback_id'] ) ) {
+		$sql = new Update(
+            'ukm_playback',
+            ['pb_id' => $_POST['playback_id']]
+        );
 		UKMplayback::getFlash()->success("Oppdatering av navn og beskrivelse er lagret.");
 	} else {
-		UKMplayback::getFlash()->success('Lydfilen er nå lastet opp og knyttet til innslaget "' . $innslag->getNavn() . '"');
+		UKMplayback::getFlash()->success('Filen er nå lastet opp og knyttet til innslaget "' . $innslag->getNavn() . '"');
 
 		$sql = new Insert('ukm_playback');
 		$sql->add('pl_id', $_POST['pl_id']);
@@ -26,8 +28,7 @@ if( isset( $_POST['submit_playback'] ) ) {
 	$sql->add('pb_description', $_POST['description']);
 	$res = $sql->run();
 	
-		
 	if( !$res || $res == -1 ) {
-		UKMplayback::getFlash()->error('En ukjent feil gjorde at lydfilen for "' . $innslag->getNavn() . '" ikke ble lagret');
+		UKMplayback::getFlash()->error('En ukjent feil gjorde at filen for "' . $innslag->getNavn() . '" ikke ble lagret');
 	}
 }
