@@ -12,7 +12,6 @@ Author URI: http://www.ukm-norge.no
 use UKMNorge\Wordpress\Modul;
 
 require_once('UKM/Autoloader.php');
-require_once('UKM/inc/handlebars.inc.php');
 
 class UKMplayback extends Modul
 {
@@ -56,7 +55,7 @@ class UKMplayback extends Modul
 
     public static function scripts_and_styles()
     {
-        wp_enqueue_script('handlebars_js');
+        wp_enqueue_script('TwigJS');
         wp_enqueue_script('WPbootstrap3_js');
         wp_enqueue_style('WPbootstrap3_css');
     

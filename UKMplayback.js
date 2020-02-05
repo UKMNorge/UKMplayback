@@ -49,12 +49,7 @@ jQuery(document).on('click', '.PBdel', function() {
 ////////////////////////////////////////////////////////////////////////////////////////
 // FILEUPLOAD: HJELPERE
 ////////////////////////////////////////////////////////////////////////////////////////
-	function fileUploadError(result) {
-		console.error(result);
-		var hbt_lastopp_error = Handlebars.compile( jQuery('#handlebars-lastopp-error').html() );
-		
-		jQuery('#fileupload_container').slideUp();
-		
-		jQuery('#fileupload_message').html( hbt_lastopp_error( result )).slideDown();
-		
-	}
+function fileUploadError(result) {
+    jQuery('#fileupload_container').slideUp();
+    jQuery('#fileupload_message').html(twigJS_lastopperror.render(result)).slideDown();
+}
