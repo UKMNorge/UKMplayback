@@ -1,0 +1,41 @@
+<ol class="list-group">
+	{% for innslag in arrangement.getInnslag().getAll()|filter( innslag => innslag.getPlayback().getAntall() > 0) %}
+		<li class="list-group-item">
+			<b>{{innslag.getNavn()}}</b>
+			<table class="table table-striped" style="border: 1px solid #ccc;">
+				{% for playback in innslag.getPlayback().getAll() %}
+					<tr>
+						<td width="65%">
+							<a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getId()}}">
+								{{playback.getNavn()}}
+							</a>
+							<br/>
+							<small>{{playback.getFil()}}</small>
+							{% if not playback.getBeskrivelse() is empty %}
+								<br/>
+								{{playback.getBeskrivelse()}}
+							{% endif %}
+						</td>
+						<td width="35%" style="text-align: right;">
+							<a href="{{ playback.getUrl() }}" class="btn btn-xs btn-ukm btn-success" target="_blank">
+								Last ned
+							</a>
+							{% if playback.getArrangementId() == arrangement.getId() %}
+								<a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getId()}}" class="btn btn-xs btn-ukm">
+									Rediger
+								</a>
+							{% endif %}
+							{% if playback.getArrangementId() == arrangement.getId() %}
+								<a href="?page=UKMplayback&delete_id={{playback.getId()}}&delete_b_id={{innslag.getId()}}" class="PBdel btn btn-xs btn-ukm btn-danger">
+									Slett
+								</a>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</li>
+	{% else %}
+		<li class="alert alert-info">Ingen innslag på din mønstring har opplastede mediefiler eller dokumenter</li>
+	{% endfor %}
+</ol>

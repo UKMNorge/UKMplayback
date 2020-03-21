@@ -4,6 +4,7 @@ use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Database\SQL\Delete;
 
 if( isset($_GET['delete_id']) && isset( $_GET['delete_b_id'] ) ) {
+    
 	$sql = new Delete(
         'ukm_playback', 
         [

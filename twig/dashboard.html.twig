@@ -1,0 +1,39 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-7 col-md-8 col-lg-9">
+				<h4>Innslag med tilknyttede mediefiler</h4>
+				{% include "liste.html.twig" %}
+			</div>
+
+			<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+				<h4>&nbsp;</h4>
+				{% if STATUS.level == 'critical' %}
+                    <div class="alert alert-danger">
+                        {{ STATUS.message|raw }}
+                    </div>
+                {% else %}
+                    <div class="card" style="min-width:auto; margin-top:0">
+                        <h4 class="mt-2">Last ned filer</h4>
+                        <p>
+                            I stedet for å laste ned enkeltfiler, kan du her
+                            laste ned zip-filer sortert per hendelse, eller hele
+                            arrangementet.
+                        </p>
+                        <p>
+                            <a href="?action=" class="btn btn-ukm btn-sm">Gå til nedlasting</a>
+                        </p>
+                    </div>
+
+                    <div class="card" style="min-width:auto">
+                        <h4 class="mt-2">Last opp ny fil</h4>
+                        {% include "skjema.html.twig" %}
+
+                    </div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -15,7 +15,7 @@ require_once('UKM/Autoloader.php');
 
 class UKMplayback extends Modul
 {
-    public static $action = 'list';
+    public static $action = 'dashboard';
     public static $path_plugin = null;
 
     public static function hook()

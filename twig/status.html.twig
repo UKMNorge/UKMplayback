@@ -1,20 +1,20 @@
 {% if STATUS.status %}
-    {% if STATUS.level == "critical" %}
-        <div class="alert alert-error alert-danger alert-block">
-            <h3>Kritisk driftsstatus!</h3>
-            <p>{{STATUS.message|raw}}</p>
-        </div>
-    {% elseif STATUS.level == "warning" %}
-        <div class="alert alert-warning alert-block">
-            <h3>Vi gjør oppmerksom!</h3>
-            <p>{{STATUS.message|raw}}</p>
-        </div>
-    {% elseif STATUS.level == "info" %}
-        <div class="alert alert-info alert-block">
-            <p>{{STATUS.message|raw}}</p>
-            <p>Du trenger ikke gjøre noe med dette</p>
-        </div>
-    {% endif %}
+    <div class="">
+        {% if STATUS.level == "critical" %}
+            <div class="alert alert-error alert-danger alert-block hidden-sm hidden-md hidden-lg">
+                <b>Kritisk driftsstatus</b>:
+                {{STATUS.message|raw}}
+            </div>
+        {% elseif STATUS.level == "warning" %}
+            <div class="alert alert-warning">
+                <b>Vi gjør oppmerksom</b>: 
+                {{STATUS.message|raw}}
+            </div>
+        {% elseif STATUS.level == "info" %}
+            <div class="alert alert-info">
+                <b>{{STATUS.message|raw}}</b>:
+                Du trenger ikke gjøre noe med dette.
+            </div>
+        {% endif %}
+    </div>
 {% endif %}
-
-

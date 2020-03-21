@@ -1,40 +1,10 @@
-<h1>Mediefiler og dokumenter til bruk i gjennomføringen</h1>
-
-{% include "wp_modul.flashbag.html.twig" %}
-
-<div class="UKM_tabs">
-	<a href="?page=UKMplayback&action=list" {{ action == 'list' ? 'class="active"' : ''}}>
-		<div>
-			<span class="tab_header">Vis filer</span>
-			<img src="//ico.ukm.no/music-32.png" width="25"  border="0" /><br />
-			<span class="tab_description">Filer tilknyttet innslag på din mønstring</span>
-		</div>
-	</a>
-
-	<a href="?page=UKMplayback&action=upload" {{ action == 'upload' ? 'class="active"' : ''}}>
-		<div>
-			<span class="tab_header">Last opp fil</span>
-			<img src="//ico.ukm.no/fancyplus-32.png" width="25"  border="0" /><br />
-			<span class="tab_description">Legg til nye filer til innslag på din mønstring</span>
-		</div>
-	</a>
-	
-	<a href="?page=UKMplayback&action=download" {{ action == 'download' ? 'class="active"' : ''}}>
-		<div>
-			<span class="tab_header">Last ned</span>
-			<img src="//ico.ukm.no/delivery-32.png" width="25"  border="0" /><br />
-			<span class="tab_description">Last ned alle filer per forestilling</span>
-		</div>
-	</a>
-
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Mediefiler og dokumenter til bruk i gjennomføringen</h1>
+            {% include "wp_modul.flashbag.html.twig" %}
+            {% include "status.html.twig" %}
+        </div>
+    </div>
 </div>
-
-<div class="UKM_tabs_desc">
-	<span></span>
-</div>
-
-<div class="UKM_content_wrapper UKMwidth">
-    {% include "status.html.twig" %}
-	{% block content %}
-	{% endblock %}
-</div>
+{% block content %}{% endblock %}
