@@ -1,4 +1,8 @@
 <?php
+
+use UKMNorge\File\Size;
+use UKMNorge\Server;
+
 ini_set("log_errors", 1);
 #ini_set('display_errors', 1);
 #ini_set("error_log", dirname(__FILE__).'/error_log');
@@ -7,6 +11,7 @@ ini_set("log_errors", 1);
 
 require_once('jQupload_handler.php');
 require_once('UKMconfig.inc.php');
+require_once('UKM/Autoloader.php');
 
 define('ACCESS_HEADER', 'https://' . UKM_HOSTNAME);
 
@@ -56,12 +61,17 @@ error_log('UPLOAD END DUE TO FILESIZE BUG');
 	## CHECK FOR ALL REQUIRED POST-VALUES
 	if( !isset($_POST['season']) ||  !isset($_POST['pl_id']) ) {
 		$error = new stdClass;
-		$error->success = false;
-		$error->message = 'Opplasteren sendte ikke med alle POST-verdier (kontakt UKM Norge support, dette er en systemfeil)';
+        $error->success = false;
+        if( intval($_SERVER['CONTENT_LENGTH']) > Server::getMaxUploadSize() ) {
+            error_log('UPLOAD END DUE TO TOO LARGE FILE UPLOAD');
+            $error->message = 'Filen du lastet opp var for stor ('. Size::getHuman( $_SERVER['CONTENT_LENGTH'],2).'). Maks filstørrelse er '. Size::getHuman(Server::getMaxUploadSize(),2);
+        } else {
+            error_log('UPLOAD END DUE TO MISSING POST VALUES');
+            $error->message = 'Opplasteren sendte ikke med alle POST-verdier (kontakt UKM Norge support, dette er en systemfeil)';
+        }
 		$error->request = $_REQUEST;
 		$error->post = $_POST;
-		$error->get = $_GET;
-error_log('UPLOAD END DUE TO MISSING POST VALUES');
+        $error->get = $_GET;
 		die(json_encode($error));
 	}
 	
