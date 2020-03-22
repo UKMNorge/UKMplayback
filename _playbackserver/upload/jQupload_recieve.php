@@ -3,6 +3,8 @@
 use UKMNorge\File\Size;
 use UKMNorge\Server;
 
+header("Content-type: application/json; charset=utf-8");
+
 ini_set("log_errors", 1);
 #ini_set('display_errors', 1);
 #ini_set("error_log", dirname(__FILE__).'/error_log');
@@ -51,7 +53,7 @@ error_log( var_export( $_FILES, true ) );
 	if(empty($data_object->size)) {
 		$error = new stdClass;
 		$error->success = false;
-		$error->message = utf8_encode('Det er en feil med filstørrelsen. Dette kan være en feil i nettleseren din, eller fordi filen er skadet og inneholder feil informasjon om egen filstørrelse.');
+		$error->message = 'Det er en feil med filstørrelsen. Dette kan være en feil i nettleseren din, eller fordi filen er skadet og inneholder feil informasjon om egen filstørrelse.';
 		$error->data = $data;
 error_log('UPLOAD END DUE TO FILESIZE BUG');
 		die(json_encode($error));
