@@ -1,6 +1,7 @@
 <?php
 
 use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Innslag\Samling;
 
 require_once('UKM/Autoloader.php');
 require_once('UKM/curl.class.php');
@@ -20,27 +21,7 @@ ob_flush();
 flush();
 
 
-// ALLE INNSLAG PÅ MØNSTRINGEN
-$files = array();
-foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
-	/** @var UKMNorge\Innslag\Innslag $innslag  */
-	$playbacks = $innslag->getPlayback();
-	if( $playbacks->getAntall() > 0 ) {
 
-		foreach( $playbacks->getAll() as $i => $pb ) {
-			// var_dump($pb);
-			/** @var UKMNorge\Innslag\Playback\Playback $pb */
-
-			// $path = $pb->relative_file();
-			$path = $pb->getPath() . $pb->getFil();
-
-			// $name = $innslag->g('b_name') .' FIL '. ($i+1) . $pb->extension();
-			$name = $innslag->getNavn() . ' FIL ' . ($i+1) . $pb->getExtension();
-
-			$files[ $path ] = $name;
-		}
-	}
-}
 
 // Prepare filelist as JSON
 $jsondata = new stdClass();

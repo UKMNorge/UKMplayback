@@ -44,7 +44,6 @@ jQuery(document).ready(function() {
     }
 });
 
-
 jQuery(document).on('click', '.PBdel', function() {
     return confirm('Er du sikker på at du vil slette denne?');
 });
@@ -56,3 +55,92 @@ function fileUploadError(result) {
     jQuery('#fileupload_container').slideUp();
     jQuery('#fileupload_message').html(twigJS_lastopperror.render(result)).slideDown();
 }
+
+///// LAST NED ZIP
+var workList = new UKMresources.workQueue(
+    'zipList', {
+        /*filterCountData: function(data) {
+            console.log(data);
+            return data.action;
+        },*/
+        elementHandler: function(zip_id) {
+            var emitter = new UKMresources.emitter('zip_' + zip_id);
+            var item = jQuery('#zip_' + zip_id);
+
+            console.group('TODO: ' + zip_id);
+            console.log(item);
+            console.log(item.data('filecount'));
+
+            var response = {
+                id: zip_id,
+                filecount: item.data('filecount')
+            };
+
+            // Har ingen filer
+            if (response.filecount == 0) {
+                setTimeout(
+                    function() {
+                        emitter.emit('success', response);
+                    }, 100
+                );
+            } else {
+                setTimeout(
+                    function() {
+                        emitter.emit('success', response);
+                    },
+                    4000
+                );
+            }
+
+            console.groupEnd();
+            return emitter;
+        }
+    }
+);
+
+// Når alle filer er zip'et
+workList.on('done', () => {
+    jQuery('#pleasewait').slideUp();
+});
+
+// En fil er ferdig
+workList.on('success', (data) => {
+    console.group('Success');
+    console.log(data);
+
+    var item = jQuery('#zip_' + data.id);
+    if (data.filecount == 0) {
+        item
+            .append('Ingen innslag har mediefiler')
+            .appendTo('#cleanedEmptyList');
+    } else {
+        item
+            .addClass('alert-success')
+            .appendTo('#cleanedList');
+    }
+
+
+    console.groupEnd();
+});
+
+/*
+workList.on('error', (data) => {
+    jQuery('#blog_'+ response.POST.blog_id)
+        .addClass('alert-danger')
+        .html(
+            twigJS_seasoncleanblog.render(response)
+        );
+});
+*/
+
+
+jQuery(document).ready(function() {
+    console.log('Start ziplist');
+    jQuery('#zipList li').each((index, zipfile) => {
+        console.log(index);
+        console.log(zipfile);
+        console.log(jQuery(zipfile).data('id'));
+        workList.push(jQuery(zipfile).data('id'));
+    });
+    workList.start();
+});

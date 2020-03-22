@@ -1,0 +1,27 @@
+<h1>Last ned zip-fil</h1>
+
+<p class="lead" id="pleasewait">
+	Vennligst vent mens vi lager zip-filer til deg.
+</p>
+
+<div class="alert alert-info" id="status" style="display: none;"></div>
+
+<div id="zipList">
+	<div id="toClean">
+		<h3>Zip-filer som skal lages</h3>
+		<ol class="list-group" id="cleanList">
+            {% for id, package in zipPackages %}
+				<li class="list-group-item" id="zip_{{id}}" data-id="{{ id }}" data-filecount="{{package.files|length}}" data-package="{{package|json_encode}}">
+					<span class="loading"><img src="/wp-admin/images/wpspin_light.gif"/></span>
+					{{ package.name }}
+				</li>
+			{% endfor %}
+		</ol>
+	</div>
+
+	<h3>Filer som er pakket</h3>
+	<ol class="list-group" id="cleanedList"></ol>
+	
+    <h3>Hendelser uten mediefiler</h3>
+	<ol class="list-group" id="cleanedEmptyList"></ol>
+</div>

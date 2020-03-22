@@ -9,6 +9,8 @@ Version: 1.0
 Author URI: http://www.ukm-norge.no
 */
 
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Innslag\Samling;
 use UKMNorge\Wordpress\Modul;
 
 require_once('UKM/Autoloader.php');
@@ -48,7 +50,10 @@ class UKMplayback extends Modul
     public static function renderAdmin()
     {
         static::include('controller/status.controller.php');
-        
+
+        $arrangement = new Arrangement( intval(get_option('pl_id')));
+
+        static::addViewData('arrangement', $arrangement);
         parent::renderAdmin();
 
     }
@@ -89,6 +94,34 @@ class UKMplayback extends Modul
         wp_enqueue_script('fileupload-image', self::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-image.js');
         // The File Upload validation plugin
         wp_enqueue_script('fileupload-validate', self::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-validate.js');
+    }
+
+
+    /**
+     * Generer en data-requet for zip-fil basert på innslag-samling
+     *
+     * @param String $zip_name
+     * @param Samling $alle_innslag
+     * @return stdClass
+     */
+    public static function zipPackage( String $zip_name, Samling $alle_innslag ) {
+        $data = new stdClass();
+        $data->files = array();
+        
+        foreach( $alle_innslag->getAll() as $innslag ) {
+            /** @var UKMNorge\Innslag\Innslag $innslag  */
+            $playbacks = $innslag->getPlayback();
+            if( $playbacks->getAntall() > 0 ) {
+                foreach( $playbacks->getAll() as $i => $pb ) {
+                    /** @var UKMNorge\Innslag\Playback\Playback $pb */
+                    $name = $innslag->getNavn() . ' FIL ' . ($i+1) . $pb->getExtension();
+                    $data->files[ $pb->getPath() . $pb->getFil() ] = $name;
+                }
+            }
+        }
+        $data->name = $zip_name;
+    
+        return $data;
     }
 }
 
