@@ -59,18 +59,10 @@ function fileUploadError(result) {
 ///// LAST NED ZIP
 var workList = new UKMresources.workQueue(
     'zipList', {
-        /*filterCountData: function(data) {
-            console.log(data);
-            return data.action;
-        },*/
         elementHandler: function(zip_id) {
             var emitter = new UKMresources.emitter('zip_' + zip_id);
             var selector = '#zip_' + zip_id;
             var item = jQuery(selector);
-
-            console.group('TODO: ' + zip_id);
-            console.log(item);
-            console.log(item.data('filecount'));
 
             var response = {
                 id: zip_id,
@@ -98,9 +90,6 @@ var workList = new UKMresources.workQueue(
                         emitter.emit('success', response);
                     },
                     handleError: (response, message) => {
-                        console.log('handleError');
-                        console.log(response);
-                        console.log(message);
                         emitter.emit('error', response);
                     }
                 }).do({
@@ -109,8 +98,6 @@ var workList = new UKMresources.workQueue(
                 });
 
             }
-
-            console.groupEnd();
             return emitter;
         }
     }
@@ -142,7 +129,6 @@ workList.on('success', (data) => {
 
         if (data.hasErrors) {
             data.errors.forEach(function(value) {
-                console.log(value);
                 if (value.type == 'fil') {
                     item.find('.warnings > ol').append(twigJS_lastnederror.render(value));
                 } else {
@@ -163,8 +149,6 @@ workList.on('success', (data) => {
 
 
 workList.on('error', (data) => {
-    console.log(data);
-    console.error('h');
     var item = jQuery('#zip_' + data.id);
 
     item.append('<br />' + data.message);
@@ -176,11 +160,7 @@ workList.on('error', (data) => {
 
 
 jQuery(document).ready(function() {
-    console.log('Start ziplist');
     jQuery('#zipList li').each((index, zipfile) => {
-        console.log(index);
-        console.log(zipfile);
-        console.log(jQuery(zipfile).data('id'));
         workList.push(jQuery(zipfile).data('id'));
     });
     workList.start();
