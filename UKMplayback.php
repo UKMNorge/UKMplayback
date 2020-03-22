@@ -108,14 +108,25 @@ class UKMplayback extends Modul
         $data = new stdClass();
         $data->files = array();
         
+        $rekkefolge = 0;
         foreach( $alle_innslag->getAll() as $innslag ) {
+            $rekkefolge++;
             /** @var UKMNorge\Innslag\Innslag $innslag  */
             $playbacks = $innslag->getPlayback();
             if( $playbacks->getAntall() > 0 ) {
-                foreach( $playbacks->getAll() as $i => $pb ) {
-                    /** @var UKMNorge\Innslag\Playback\Playback $pb */
-                    $name = $innslag->getNavn() . ' FIL ' . ($i+1) . $pb->getExtension();
-                    $data->files[ $pb->getPath() . $pb->getFil() ] = $name;
+                foreach( $playbacks->getAll() as $i => $playback ) {
+                    /** @var UKMNorge\Innslag\Playback\Playback $playback */
+                    $fil = new stdClass();
+                    $fil->path = $playback->getPath() . $playback->getFil();
+                    $fil->navn = 
+                        ( $alle_innslag->getContext()->getType() == 'forestilling' ? 'NR'. $rekkefolge.' - ' : '' ).
+                        $innslag->getNavn() . ' FIL ' . ($i+1) . $playback->getExtension();
+                    $fil->innslag = 
+                        ( $alle_innslag->getContext()->getType() == 'forestilling' ? 'NR'. $rekkefolge.' - ' : '' ).
+                        $innslag->getNavn();
+                    $fil->playback_navn = $playback->getNavn();
+                    $fil->playback_link = $playback->getUrl();
+                    $data->files[] = $fil;
                 }
             }
         }

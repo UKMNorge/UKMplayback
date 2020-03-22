@@ -65,7 +65,8 @@ var workList = new UKMresources.workQueue(
         },*/
         elementHandler: function(zip_id) {
             var emitter = new UKMresources.emitter('zip_' + zip_id);
-            var item = jQuery('#zip_' + zip_id);
+            var selector = '#zip_' + zip_id;
+            var item = jQuery(selector);
 
             console.group('TODO: ' + zip_id);
             console.log(item);
@@ -84,12 +85,29 @@ var workList = new UKMresources.workQueue(
                     }, 100
                 );
             } else {
-                setTimeout(
-                    function() {
+                UKMresources.Request({
+                    url: 'https://playback.' + window.location.hostname + '/zipMePlease/',
+                    containers: {
+                        loading: selector + ' .loading',
+                        success: selector + ' .success',
+                        error: selector + ' .error',
+                        fatalError: '#status',
+                        main: '#formContainer'
+                    },
+                    handleSuccess: (response) => {
                         emitter.emit('success', response);
                     },
-                    4000
-                );
+                    handleError: (response, message) => {
+                        console.log('handleError');
+                        console.log(response);
+                        console.log(message);
+                        emitter.emit('error', response);
+                    }
+                }).do({
+                    data: item.data('package'),
+                    id: zip_id
+                });
+
             }
 
             console.groupEnd();
@@ -105,33 +123,56 @@ workList.on('done', () => {
 
 // En fil er ferdig
 workList.on('success', (data) => {
-    console.group('Success');
-    console.log(data);
-
-    var item = jQuery('#zip_' + data.id);
+    // Ingen filer betyr at vi ikke får serverdata,
+    // men bare enkel ID-data tilbake
     if (data.filecount == 0) {
-        item
-            .append('Ingen innslag har mediefiler')
+        jQuery('#zip_' + data.id)
+            //.append('Ingen innslag har mediefiler')
             .appendTo('#cleanedEmptyList');
-    } else {
-        item
-            .addClass('alert-success')
-            .appendTo('#cleanedList');
+        return true;
     }
 
+    // Dobbeltsjekk at vi har serverdata
+    if (data.POST) {
+        var item = jQuery('#zip_' + data.POST.id);
 
-    console.groupEnd();
+        item.find('.download').attr('href', data.url).fadeIn();
+        item.find('.navn.preLoad').slideUp();
+        item.find('.navn.postLoad').slideDown();
+
+        if (data.hasErrors) {
+            data.errors.forEach(function(value) {
+                console.log(value);
+                if (value.type == 'fil') {
+                    item.find('.warnings > ol').append(twigJS_lastnederror.render(value));
+                } else {
+                    item.find('.warnings > ol').append(
+                        jQuery('<li class="list-group-item alert-danger">')
+                        .html('<b>Klarte ikke å lagre zip-filen: </b>' + value)
+                    );
+                    item.find('.download').hide();
+                }
+            });
+            item.find('.warnings').slideDown();
+        }
+        return true;
+    }
+
+    return false;
 });
 
-/*
+
 workList.on('error', (data) => {
-    jQuery('#blog_'+ response.POST.blog_id)
+    console.log(data);
+    console.error('h');
+    var item = jQuery('#zip_' + data.id);
+
+    item.append('<br />' + data.message);
+
+    item
         .addClass('alert-danger')
-        .html(
-            twigJS_seasoncleanblog.render(response)
-        );
+        .appendTo('#cleanedList');
 });
-*/
 
 
 jQuery(document).ready(function() {
