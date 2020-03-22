@@ -1,34 +1,29 @@
 <?php
 
 use UKMNorge\Arrangement\Arrangement;
-use UKMNorge\Database\SQL\Insert;
-use UKMNorge\Database\SQL\Update;
+use UKMNorge\Innslag\Playback\Write;
 
 if( isset( $_POST['submit_playback'] ) ) {
 	$arrangement = new Arrangement( get_option('pl_id') );
-
-	$innslag = $arrangement->getInnslag()->get( $_POST['b_id'] ); // new innslag(  );
+	$innslag = $arrangement->getInnslag()->get( $_POST['b_id'] );
 
 	if( isset( $_POST['playback_id'] ) ) {
-		$sql = new Update(
-            'ukm_playback',
-            ['pb_id' => $_POST['playback_id']]
-        );
-		UKMplayback::getFlash()->success("Oppdatering av navn og beskrivelse er lagret.");
+        try {
+            $playback = $innslag->getPlayback()->get(intval($_POST['playback_id']));
+            $playback->setNavn($_POST['name']);
+            $playback->setBeskrivelse($_POST['description']);
+            Write::lagre($playback);
+            UKMplayback::getFlash()->success("Oppdatering av navn og beskrivelse er lagret.");
+        } catch( Exception $e ) {
+            UKMplayback::getFlash()->error('Kunne ikke lagre endringene.');
+        }
 	} else {
-		UKMplayback::getFlash()->success('Filen er nå lastet opp og knyttet til innslaget "' . $innslag->getNavn() . '"');
-
-		$sql = new Insert('ukm_playback');
-		$sql->add('pl_id', $_POST['pl_id']);
-		$sql->add('b_id', $_POST['b_id']);
-		$sql->add('pb_file', $_POST['filename']);
-		$sql->add('pb_season', $_POST['season']);
-	}
-	$sql->add('pb_name', $_POST['name']);
-	$sql->add('pb_description', $_POST['description']);
-	$res = $sql->run();
-	
-	if( !$res || $res == -1 ) {
-		UKMplayback::getFlash()->error('En ukjent feil gjorde at filen for "' . $innslag->getNavn() . '" ikke ble lagret');
+        try {
+            Write::opprett( $arrangement, $innslag->getId(), $_POST['filename'], $_POST['name'], $_POST['description']);
+            UKMplayback::getFlash()->success('Filen er nå lastet opp og knyttet til innslaget "' . $innslag->getNavn() . '"');
+        } catch( Exception $e ) {
+            UKMplayback::getFlash()->error('Kunne ikke laste opp filen. Systemet sa: '. $e->getMessage());
+        }
+		
 	}
 }

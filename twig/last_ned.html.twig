@@ -1,0 +1,44 @@
+<h1>Last ned zip-fil</h1>
+
+<style>
+    .navn.big {
+        font-size: 2em;
+        font-weight: bold;
+    }
+</style>
+
+<p class="lead" id="pleasewait">
+	Vennligst vent mens vi lager zip-filer til deg.
+</p>
+
+<div class="alert alert-info" id="status" style="display: none;"></div>
+
+<div class="row" id="zipList">
+	<div class="col-xs-12 col-sm-8" id="toClean">
+		<h3>Zip-filer</h3>
+		<ol class="list-group" id="cleanList">
+            {% for id, package in zipPackages %}
+				<li class="list-group-item" id="zip_{{id}}" data-id="{{ id }}" data-filecount="{{package.files|length}}" data-package="{{package|json_encode}}">
+                    <a class="download btn btn-ukm btn-sm pull-right" target="_blank" style="display:none">Last ned</a>
+
+					<span class="loading" style="display:none;"><img src="/wp-admin/images/wpspin_light.gif"/></span>
+					<span class="navn preLoad">{{ package.name }}</span>
+					<h4 class="navn postLoad" style="display:none;">{{ package.name }}</h4>
+                    
+                    <div class="clearfix"></div>
+                    <div class="warnings" style="display:none;">
+                        <p class="text-danger bold" style="text-transform: uppercase; margin-bottom: 0;">
+                            Følgende filer kunne ikke legges til i zip-filen:
+                        </p>
+                        <ol class="list-group" style="margin-top:0;"></ol>
+                    </div>
+				</li>
+			{% endfor %}
+		</ol>
+	</div>
+
+    <div class="col-xs-12 col-sm-4">
+        <h3>Hendelser uten mediefiler</h3>
+        <ol class="list-group" id="cleanedEmptyList"></ol>
+    </div>
+</div>

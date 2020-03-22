@@ -1,37 +1,35 @@
-{% extends "layout.html.twig" %} {% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>Rediger {{ playback.getNavn() }}</h2>
 
-<div class="clearfix"></div>
+			<form action="?page=UKMplayback&save=true" method="post">
+				<input type="hidden" name="playback_id" value="{{ playback.getId() }}"/>
+				<input type="hidden" name="b_id" value="{{ innslag.getId() }}"/>
 
-<h2>Rediger {{ playback.getNavn() }}</h2>
+				<div class="form-group">
+					<label>Innslag:</label>
+					{{ innslag.getNavn() }}
+				</div>
 
-<form action="?page=UKMplayback&save=true" method="post">
-    <input type="hidden" name="playback_id" value="{{ playback.getId() }}" />
-    <input type="hidden" name="b_id" value="{{ innslag.getId() }}" />
-    <div class="form-group">
-        <div class="form-group">
-            <label>Innslag:</label> {{ innslag.getNavn() }}
-        </div>
-    </div>
+				<div class="form-group">
+					<label>Låtens tittel</label>
+					<input type="text" name="name" class="form-control" style="margin-bottom:0;" value="{{ playback.getNavn() }}" placeholder=""/>
+					<p class="mt-0 text-muted">Navnet på framføringen som filen hører til</p>
+				</div>
 
-    <div class="form-group">
-        <div class="group">
-            <label>Låtens tittel</label>
-            <input type="text" name="name" class="form-control" value="{{ playback.getNavn() }}" placeholder="" />
-            <p>(Navnet på framføringen som lydsporet hører til)</p>
-        </div>
-    </div>
+				<div class="form-group">
+					<label>Eventuelle forklaringer / kommentarer</label>
+					<textarea name="description" class="form-control">{{ playback.getBeskrivelse() }}</textarea>
+				</div>
 
-    <div class="form-group">
-        <div class="group">
-            <label>Eventuelle forklaringer / kommentarer</label>
-            <textarea name="description" class="form-control">{{ playback.getBeskrivelse() }}</textarea>
-        </div>
-    </div>
-    <div class="group">
-        <input name="submit_playback" class="button-primary" id="submitbutton" type="submit" value="Lagre" />
-    </div>
-</form>
-
-<div class="clearfix"></div>
+				<div class="form-group">
+					<input name="submit_playback" class="btn btn-ukm btn-sm btn-success" id="submitbutton" type="submit" value="Lagre"/>
+					<span style="margin-left: 1em;">eller
+					</span>
+					<a href="?page={{GET('page')}}">avbryt</a>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
-{% endblock %}

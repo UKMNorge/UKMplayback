@@ -1,0 +1,68 @@
+<div class="videoopplaster">
+	<p class="text-muted">
+		<strong>OBS:</strong>
+		Filnavn med spesialtegn som apostrofer osv vil gjøre at opplastingen stopper uten feilmelding.
+	</p>
+	<div id="fileupload_message" style="display:none;"></div>
+
+	<form action="?page=UKMplayback&save=true" method="post">
+		<div id="fileupload_container">
+			<div class="alert alert-success bold" style="font-size: 1.2em; text-align:center; margin-bottom: .4em;" id="fileupload_dropzone">
+				Slipp filen her
+				<span class="dashicons dashicons-upload"></span>
+			</div>
+
+			<div id="filechooser" style="border: none; max-width: 100%">
+				<p class="mt-0 text-muted center">
+					eller velg fil
+				</p>
+				<input id="fileupload_playback" name="files[]" type="file" style="border: none;line-height: 1em; max-width: 100%;" class="form-control"/>
+			</div>
+
+			<div id="uploading" style="display:none;">
+				<label>Laster opp fil</label>
+				<progress value="0" max="100" id="uploadprogress" class="progress progress-striped active" style="width: 100%"/>
+			</div>
+		</div>
+
+		<div id="uploaded" class="mb-4" style="display:none;">
+			<label>Filen er lastet opp!</label>
+			<br/>
+			Fyll ut skjemaet nedenfor, og trykk lagre!
+		</div>
+
+		<div class="form-group">
+            <label>Innslag</label>
+            <select name="b_id" id="b_id" class="form-control">
+                <option value="0" selected disabled>Velg innslag</option>
+                {% for innslag in arrangement.getInnslag().getAll() %}
+                    <option value="{{ innslag.getId() }}">
+                        {{ innslag.getNavn() }}
+                        ({{ innslag.getType().getNavn() }})
+                    </option>
+                {% endfor %}
+            </select>
+		</div>
+
+		<div class="form-group">
+            <label>Tittel</label>
+            <input type="text" name="name" class="form-control" />
+            <p class="text-muted">
+                Skriv navnet på tittelen/fremføringen som mediefilen/dokumentet hører til. 
+                Dette er spesielt viktig for innslag som har flere titler.
+            </p>
+		</div>
+
+		<div class="form-group">
+            <label>Eventuelle forklaringer / kommentarer</label>
+            <textarea name="description" class="form-control"></textarea>
+		</div>
+
+		<input type="hidden" name="season" id="season" value="{{ arrangement.getSesong() }}"/>
+		<input type="hidden" name="pl_id" id="pl_id" value="{{ arrangement.getId() }}"/>
+		<input type="hidden" id="filename" value="demofile3.bogus" name="filename"/>
+		<div class="form-group">
+			<input name="submit_playback" class="btn btn-ukm btn-sm btn-success" id="submitbutton" type="submit" value="Lagre" disabled="disabled"/>
+		</div>
+	</form>
+</div>
