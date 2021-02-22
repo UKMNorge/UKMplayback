@@ -1,0 +1,65 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <h1>Etterspør mediefiler</h1>
+                <div class="alert alert-info col-xs-4">
+					<p>
+						OBS: hvis du har tenkt å publisere filene, er det viktig at du skriver dette inn i sms’en, så ingen deltakere blir overrasket…
+					</p>
+				</div>
+            </div>
+
+            <div class="col-xs-3">
+                <h4>Avsender </h4>
+            </div>
+
+            <div class="col-xs-9 form-group">
+                <select name="b_id" id="b_id" class="form-control">
+                    <option value="0" selected disabled>Velg innslag</option>
+                    {% for p in arrangement.getKontaktpersoner().getAll() %}
+                        <option>{{ p.getNavn() }}</option>
+                    {% endfor %}
+                </select>
+
+                <p class="text-muted">
+                    Listen viser alle kontaktpersoner for arrangementet ditt <a href="#"> Endre kontaktpersoner</a>
+                </p>
+            </div>
+
+            <div class="col-xs-3">
+                <h4>Mottakere </h4>
+            </div>
+
+            <div class="col-xs-9 form-group">
+                {% for innslag in arrangement.getInnslag().getAll() %}
+                <input type="checkbox" id="{{ innslag.getId() }}">
+                <label for="vehicle1">{{ innslag.getType().getNavn() }}</label><br>
+                {% endfor %}
+            </div>
+
+            <div class="col-xs-3">
+                <h4>SMS-tekst </h4>
+            </div>
+
+            <div class="col-xs-9 form-group">
+                <textarea></textarea>
+                <p class="text-muted">
+                    Systemet legger automatisk til lenke for opplasting på slutten av meldingen
+                </p>
+            </div>
+
+
+
+            <div class="col-xs-12">
+                <a href="//ukm.dev/tromsogfinnmark/wp-admin/edit.php?page=UKMnettside" target="_blank" class="btn btn-ukm btn-sm">Send forerspørsel</a>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
