@@ -1,0 +1,126 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div id="smsInfo" class="row">
+        <ul  class="meldinger col-xs-12">
+            {% for mottaker_id, mottaker_nummer in mottakere %}
+            <li id="sms_{{ loop.index }}" class="melding nop col-xs-12" data-id='{{ loop.index }}'>
+                <div class="inner list-group-item">
+                    <h4 class="title avsender-tel" tel-nr="{{ avsender == '0' ? 'UKM lokal' : avsender }}">Avsender: {{ avsender == '0' ? 'UKM lokal' : avsender }}</h4>
+                    <h4 class="title melding-til" tel-nr="{{ mottaker_nummer }}">Melding til: {{ mottaker_nummer }}</h4>
+                    <textarea class="melding-text" disabled>{{ melding }} https//delta.ukm.no/filer/{{ mottaker_id }} {{ avsender == '0' ? '- UKM (denne SMS kan ikke besvares)' : '' }}</textarea>
+                    <div class="status">
+                        <span class="loading"><img src="/wp-admin/images/wpspin_light.gif"/></span>
+                        <div class="sendt alert alert-success hide" role="alert">
+                            <span>Meldingen ble sendt</span>
+                        </div>
+                        <div class="not-sendt alert alert-danger hide" role="alert"></div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
+
+
+<style>
+    .nop {
+        padding: 0 !important;
+    }
+    .meldinger .melding .inner {
+        width: 300px;
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+    .meldinger .melding .inner .title {
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .meldinger .melding .inner textarea {
+        width: 100%;
+        min-height: 180px;
+        border: solid 1px #bebebe;
+        cursor: auto !important;
+    }
+    .sendt, .not-sendt {
+        margin: 0;
+        margin-top: 15px;
+    }
+</style>
+
+<script>
+
+var smsList = new UKMresources.workQueue(
+    'smsInfo', {
+        elementHandler: function(sms_id) {
+            var el = jQuery('#' + sms_id);
+
+            var avsender = el.find('.avsender-tel').attr('tel-nr');
+            var telNr = el.find('.melding-til').attr('tel-nr');
+            var melding = el.find('.melding-text').text();
+
+            var emitter = new UKMresources.emitter('sms_' + sms_id);
+            // var selector = '#zip_' + zip_id;
+                      
+            UKMresources.Request({
+                action: 'UKMplayback',
+                controller: 'sendSMS',
+                containers: {},
+                handleSuccess: (response) => {
+                    emitter.emit('success', response);
+                },
+                handleError: (response, message) => {
+                    emitter.emit('error', response, message);
+                    smsErrorStatus(message);
+                }
+            }).do({// Data her
+                avsender: avsender,
+                tel_nr: telNr,
+                melding: melding,
+                sms_id: sms_id 
+            });
+
+            return emitter;
+        }
+    }
+);
+
+
+// En fil er ferdig
+smsList.on('success', (data) => {
+    if(data.POST.sms_id) {
+        var status = jQuery('#'+data.POST.sms_id).find('.status');
+
+        status.children('.loading').addClass('hide');
+        status.children('.sendt').removeClass('hide');
+    }
+});
+
+var smsErrorStatus = (data) => {
+    if(data.POST.sms_id) {
+        var status = jQuery('#'+data.POST.sms_id).find('.status');
+
+        status.children('.loading').addClass('hide');
+        status.children('.not-sendt').removeClass('hide').html('Meldingen ble ikke sendt. ' + data.message);
+    }
+};
+
+jQuery(document).ready(function() {
+    jQuery('#smsInfo li').each((index, smsItem) => {
+        smsList.push(jQuery(smsItem).attr('id'));
+    });
+    smsList.start();
+});
+
+
+</script>
+
+
+
+{% endblock %}
+
