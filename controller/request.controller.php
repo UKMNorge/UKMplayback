@@ -1,6 +1,8 @@
 <?php
 
+require_once('UKMconfig.inc.php');
 use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Innslag\Innslag;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Post to server
@@ -12,7 +14,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         UKMplayback::getFlash()->error('Må ha mottaker');
     }
     else {
-        UKMplayback::addViewData('mottakere', $_POST['innslag']);
+        $innslagArr = [];
+
+        foreach($_POST['innslag'] as $key => $value) {
+            $innslag = Innslag::getById($key);
+            $innslagArr[$key] = [$innslag->getNavn(), $value];
+        }
+
+
+        
+
+        UKMplayback::addViewData('ukmHostName', UKM_HOSTNAME);
+        UKMplayback::addViewData('mottakere', $innslagArr);
         UKMplayback::setAction('sendRequest');
     }
 }
