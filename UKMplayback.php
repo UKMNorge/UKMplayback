@@ -23,6 +23,8 @@ class UKMplayback extends Modul
     public static function hook()
     {
         add_action('admin_menu', ['UKMplayback','meny'], 500);
+        static::setupAjax();
+
     }
 
     public static function meny() {

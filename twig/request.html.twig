@@ -1,0 +1,97 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<form method="post">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <h1 class="upload-title">Etterspør mediefiler</h1>
+                <div class="alert alert-info col-xs-5">
+					<p>
+						OBS: hvis du har tenkt å publisere filene, er det viktig at du skriver dette inn i sms’en, så ingen deltakere blir overrasket…
+					</p>
+				</div>
+            </div>
+
+            <div class="col-xs-2">
+                <h4 class="upload-title">Avsender </h4>
+            </div>
+
+            <div class="col-xs-10 form-group">
+                <select name="avsender" required class="form-control">
+                    <option value="0" selected>UKM lokal</option>
+                    {% for p in arrangement.getKontaktpersoner().getAll() %}
+                        <option value="{{ p.getTelefon() }}">{{ p.getNavn() }}</option>
+                    {% endfor %}
+                </select>
+
+                <p class="text-muted text-under-info">
+                    Listen viser alle kontaktpersoner for arrangementet ditt <a href="index.php"> Endre kontaktpersoner</a>
+                </p>
+            </div>
+
+            <div class="col-xs-2">
+                <h4 class="upload-title">Mottakere </h4>
+            </div>
+
+            <div class="col-xs-10 form-group">
+                <div class="mottakere">
+                    {% for innslag in arrangement.getInnslag().getAll() %}
+                    <input name="innslag[{{ innslag.getId() }}]" class="innslag-chck" id="innslag{{ innslag.getId() }}" type="checkbox" value="{{ innslag.getKontaktperson().getMobil() }}">
+                    <label class="innslag-label" for="innslag{{ innslag.getId() }}">
+                        {{ innslag.getNavn() }}
+                        <span style="font-weight: normal;">({{ innslag.getType().getNavn() }})</span>
+                    </label><br>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-xs-2">
+                <h4 class="upload-title">SMS-tekst </h4>
+            </div>
+
+            <div class="col-xs-10 form-group">
+                <textarea name="melding" class="sms-text">Hei, 
+
+Vi trenger noen mediefiler fra deg. Kan du laste opp filmen din på denne siden?
+
+Filmen skal brukes til...</textarea>
+                <p class="text-muted text-under-info">
+                    Systemet legger automatisk til lenke for opplasting på slutten av meldingen
+                </p>
+            </div>
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-ukm btn-sm">Send forerspørsel</button>
+                <span>eller <a href="?page={{GET('page')}}" >avbryt</a>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<style>
+    .upload-title {
+        margin-top: 0;
+    }
+    .innslag-chck {
+        margin: 7px 0px !important;
+        margin-right: 4px !important;
+    }
+    .innslag-label {
+        margin: 0 !important;
+    }
+    textarea.sms-text {
+        min-height: 150px;
+    }
+    .mottakere {
+        max-height: 135px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    .mottakere, .text-under-info, textarea.sms-text {
+        width: 325px;
+    }
+</style>
+
+{% endblock %}
