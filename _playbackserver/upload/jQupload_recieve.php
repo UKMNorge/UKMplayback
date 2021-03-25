@@ -15,7 +15,19 @@ require_once('jQupload_handler.php');
 require_once('UKMconfig.inc.php');
 require_once('UKM/Autoloader.php');
 
-define('ACCESS_HEADER', 'https://' . UKM_HOSTNAME);
+$origin = $_SERVER['HTTP_ORIGIN'];
+
+$acceptedOrigins = [
+    'https://delta.' . UKM_HOSTNAME, // delta.ukm.no eller delta.ukm.dev
+    'https://' . UKM_HOSTNAME        
+];
+
+$allowOrigin = null;
+if(in_array($origin, $acceptedOrigins)) {
+    $allowOrigin = $origin;
+}
+
+define('ACCESS_HEADER', $allowOrigin);
 
 // SET HEADERS MANUALLY, BECAUSE IF UPLOAD FAILS, IT SKIPS THE HEADERS AND CRASHES IT ALL...
 header('Access-Control-Allow-Origin: '.ACCESS_HEADER);
