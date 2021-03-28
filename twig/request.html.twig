@@ -9,7 +9,7 @@
                 <h1 class="upload-title">Etterspør mediefiler</h1>
                 <div class="alert alert-info col-xs-5">
 					<p>
-						OBS: hvis du har tenkt å publisere filene, er det viktig at du skriver dette inn i sms’en, så ingen deltakere blir overrasket…
+						OBS: hvis du har tenkt å publisere filene et sted, er det viktig å skrive dette inn i sms'en, så du vet at du har lov til å gjøre det.
 					</p>
 				</div>
             </div>
@@ -20,9 +20,9 @@
 
             <div class="col-xs-10 form-group">
                 <select name="avsender" required class="form-control">
-                    <option value="0" selected>UKM lokal</option>
-                    {% for p in arrangement.getKontaktpersoner().getAll() %}
-                        <option value="{{ p.getTelefon() }}">{{ p.getNavn() }}</option>
+                    <option value="0" selected>UKMlokal</option>
+                    {% for person in arrangement.getKontaktpersoner().getAll() %}
+                        <option value="{{ person.getTelefon() }}">{{ person.getNavn() }} ({{person.getMobil()}})</option>
                     {% endfor %}
                 </select>
 
@@ -54,7 +54,7 @@
             <div class="col-xs-10 form-group">
                 <textarea name="melding" class="sms-text">Hei, 
 
-Vi trenger noen mediefiler fra deg. Kan du laste opp filmen din på denne siden?
+Vi trenger noen filer fra deg. Kan du laste opp filmen din på denne siden?
 
 Filmen skal brukes til...</textarea>
                 <p class="text-muted text-under-info">
