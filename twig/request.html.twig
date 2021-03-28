@@ -22,7 +22,7 @@
                 <select name="avsender" required class="form-control">
                     <option value="0" selected>UKMlokal</option>
                     {% for person in arrangement.getKontaktpersoner().getAll() %}
-                        <option value="{{ person.getTelefon() }}">{{ person.getNavn() }} ({{person.getMobil()}})</option>
+                        <option value="{{ person.getTelefon() }}">{{ person.getNavn() }} ({{person.getTelefon()}})</option>
                     {% endfor %}
                 </select>
 
