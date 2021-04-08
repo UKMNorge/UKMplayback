@@ -67,35 +67,35 @@ class UKMplayback extends Modul
         wp_enqueue_style('WPbootstrap3_css');
     
         wp_enqueue_style('UKMresources_tabs');
-        wp_enqueue_script('UKMplaybackJS', self::getPluginUrl() . 'UKMplayback.js');
+        wp_enqueue_script('UKMplaybackJS', static::getPluginUrl() . 'UKMplayback.js');
     
         wp_enqueue_script('jquery');
         wp_enqueue_script('jqueryGoogleUI', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
     
-        wp_enqueue_style('blueimp-gallery-css', self::getPluginUrl() . 'jqueryuploader/css/blueimp-gallery.min.css');
+        wp_enqueue_style('blueimp-gallery-css', static::getPluginUrl() . 'jqueryuploader/css/blueimp-gallery.min.css');
     
         // CSS to style the file input field as button and adjust the Bootstrap progress bars
-        wp_enqueue_style('jquery-fileupload-css', self::getPluginUrl() . 'jqueryuploader/css/jquery.fileupload.css');
-        wp_enqueue_style('jquery-fileupload-ui-css', self::getPluginUrl() . 'jqueryuploader/css/jquery.fileupload-ui.css');
+        wp_enqueue_style('jquery-fileupload-css', static::getPluginUrl() . 'jqueryuploader/css/jquery.fileupload.css');
+        wp_enqueue_style('jquery-fileupload-ui-css', static::getPluginUrl() . 'jqueryuploader/css/jquery.fileupload-ui.css');
     
         // The jQuery UI widget factory, can be omitted if jQuery UI is already included
-        wp_enqueue_script('jquery_ui_widget', self::getPluginUrl() . 'jqueryuploader/js/vendor/jquery.ui.widget.js');
+        wp_enqueue_script('jquery_ui_widget', static::getPluginUrl() . 'jqueryuploader/js/vendor/jquery.ui.widget.js');
         // The Load Image plugin is included for the preview images and image resizing functionality
-        wp_enqueue_script('load-image', self::getPluginUrl() . 'jqueryuploader/js/vendor/load-image.min.js');
+        wp_enqueue_script('load-image', static::getPluginUrl() . 'jqueryuploader/js/vendor/load-image.min.js');
         // The Canvas to Blob plugin is included for image resizing functionality
-        wp_enqueue_script('canvas-to-blob', self::getPluginUrl() . 'jqueryuploader/js/vendor/canvas-to-blob.min.js');
+        wp_enqueue_script('canvas-to-blob', static::getPluginUrl() . 'jqueryuploader/js/vendor/canvas-to-blob.min.js');
         // The Iframe Transport is required for browsers without support for XHR file uploads
-        wp_enqueue_script('iframe-transport', self::getPluginUrl() . 'jqueryuploader/js/jquery.iframe-transport.js');
+        wp_enqueue_script('iframe-transport', static::getPluginUrl() . 'jqueryuploader/js/jquery.iframe-transport.js');
         // The basic File Upload plugin
-        wp_enqueue_script('fileupload', self::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload.js');
+        wp_enqueue_script('fileupload', static::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload.js');
         // The File Upload user interface plugin
-        wp_enqueue_script('fileupload-ui', self::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-ui.js');
+        wp_enqueue_script('fileupload-ui', static::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-ui.js');
         // The File Upload processing plugin
-        wp_enqueue_script('fileupload-process', self::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-process.js');
+        wp_enqueue_script('fileupload-process', static::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-process.js');
         // The File Upload image preview & resize plugin 
-        wp_enqueue_script('fileupload-image', self::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-image.js');
+        wp_enqueue_script('fileupload-image', static::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-image.js');
         // The File Upload validation plugin
-        wp_enqueue_script('fileupload-validate', self::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-validate.js');
+        wp_enqueue_script('fileupload-validate', static::getPluginUrl() . 'jqueryuploader/js/jquery.fileupload-validate.js');
     }
 
 
