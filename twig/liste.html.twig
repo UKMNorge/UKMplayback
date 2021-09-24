@@ -5,7 +5,7 @@
 			<table class="table table-striped" style="border: 1px solid #ccc;">
 				{% for playback in innslag.getPlayback().getAll() %}
 					<tr>
-						<td width="65%">
+						<td width="{{ arrangement.erKunstgalleri ? 60 : 65}}%">
 							<a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getId()}}">
 								{{playback.getNavn()}}
 							</a>
@@ -16,7 +16,18 @@
 								{{playback.getBeskrivelse()}}
 							{% endif %}
 						</td>
-						<td width="35%" style="text-align: right;">
+						<td width="{{ arrangement.erKunstgalleri ? 40 : 35}}%" style="text-align: right;">
+							<img href="{{ playback.getUrl() }}"/>
+							
+						{% if arrangement.erKunstgalleri %}
+							{% set imgPlaybackUrl = "#{playback.base_url}#{ playback.file_path }#{ playback.fil }" %}
+
+							<img class="img-responsive" src="{{ imgPlaybackUrl }}" />
+							<a href="?page={{ GET('page') }}&action=assignkunstverk&innslag={{innslag.getId()}}&id={{playback.getId()}}" class="btn btn-xs btn-ukm btn-success">
+								godkjenn kunstverk
+							</a>
+						{% endif %}
+
 							<a href="{{ playback.getUrl() }}" class="btn btn-xs btn-ukm btn-success" target="_blank">
 								Last ned
 							</a>
