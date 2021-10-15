@@ -19,11 +19,11 @@
 						<td width="{{ arrangement.erKunstgalleri ? 40 : 35}}%" style="text-align: right;">
 							<img href="{{ playback.getUrl() }}"/>
 							
-						{% if arrangement.erKunstgalleri %}
+						{% if arrangement.erKunstgalleri and playback.erBilde() %}
 							{% set imgPlaybackUrl = "#{playback.base_url}#{ playback.file_path }#{ playback.fil }" %}
 
 							<img class="img-responsive" src="{{ imgPlaybackUrl }}" />
-							<a href="?page={{ GET('page') }}&action=assignkunstverk&innslag={{innslag.getId()}}&id={{playback.getId()}}" class="btn btn-xs btn-ukm btn-success">
+							<a {{ playback.erGodkjent ? 'disabled' : '' }} href="?page={{ GET('page') }}&action=assignkunstverk&innslag={{innslag.getId()}}&id={{playback.getId()}}" : "" }}"  class="btn btn-xs btn-ukm btn-{{ playback.erGodkjent }}">
 								godkjenn kunstverk
 							</a>
 						{% endif %}
