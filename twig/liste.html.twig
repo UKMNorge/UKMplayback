@@ -24,7 +24,7 @@
 								{% set imgPlaybackUrl = "#{playback.base_url}#{ playback.file_path }#{ playback.fil }" %}
 
 								<img class="img-responsive" src="{{ imgPlaybackUrl }}" />
-								<a {{ playback.erGodkjent ? 'disabled' : '' }} href="{{ not playback.erGodkjent ? "?page={{ GET('page') }}&action=assignkunstverk&innslag={{innslag.getId()}}&id={{playback.getId()}}" : "" }}"  class="btn btn-xs btn-ukm btn-{{ playback.erGodkjent ? 'default' : 'success'}}">
+								<a {{ playback.erGodkjent ? 'disabled' : '' }} href="?page={{ GET('page') }}&action=assignkunstverk&innslag={{innslag.getId()}}&id={{playback.getId()}}"  class="btn btn-xs btn-ukm btn-{{ playback.erGodkjent ? 'default' : 'success'}}">
 									godkjenn kunstverk
 								</a>
 							{% endif %}
