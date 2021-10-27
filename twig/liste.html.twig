@@ -25,7 +25,7 @@
 
 								<img class="img-responsive" src="{{ imgPlaybackUrl }}" />
 								<a {{ playback.erGodkjent ? 'disabled' : '' }} href="?page={{ GET('page') }}&action=assignkunstverk&innslag={{innslag.getId()}}&id={{playback.getId()}}"  class="btn btn-xs btn-ukm btn-{{ playback.erGodkjent ? 'default' : 'success'}}">
-									godkjenn kunstverk
+									Godkjenn kunstverk
 								</a>
 							{% endif %}
 
