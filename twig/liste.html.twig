@@ -4,34 +4,47 @@
 			<b>{{innslag.getNavn()}}</b>
 			<table class="table table-striped" style="border: 1px solid #ccc;">
 				{% for playback in innslag.getPlayback().getAll() %}
-					<tr>
-						<td width="65%">
-							<a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getId()}}">
-								{{playback.getNavn()}}
-							</a>
-							<br/>
-							<small>{{playback.getFil()}}</small>
-							{% if not playback.getBeskrivelse() is empty %}
+					{% if not arrangement.erKunstgalleri() or (arrangement.erKunstgalleri() and not playback.erGodkjent()) %}
+						<tr>
+							<td width="{{ arrangement.erKunstgalleri ? 60 : 65}}%">
+								<a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getId()}}">
+									{{playback.getNavn()}}
+								</a>
 								<br/>
-								{{playback.getBeskrivelse()}}
-							{% endif %}
-						</td>
-						<td width="35%" style="text-align: right;">
-							<a href="{{ playback.getUrl() }}" class="btn btn-xs btn-ukm btn-success" target="_blank">
-								Last ned
-							</a>
-							{% if playback.getArrangementId() == arrangement.getId() %}
-								<a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getId()}}" class="btn btn-xs btn-ukm">
-									Rediger
+								<small>{{playback.getFil()}}</small>
+								{% if not playback.getBeskrivelse() is empty %}
+									<br/>
+									{{playback.getBeskrivelse()}}
+								{% endif %}
+							</td>
+							<td width="{{ arrangement.erKunstgalleri ? 40 : 35}}%" style="text-align: right;">
+								<img href="{{ playback.getUrl() }}"/>
+								
+							{% if arrangement.erKunstgalleri and playback.erBilde() %}
+								{% set imgPlaybackUrl = "#{playback.base_url}#{ playback.file_path }#{ playback.fil }" %}
+
+								<img class="img-responsive" src="{{ imgPlaybackUrl }}" />
+								<a {{ playback.erGodkjent ? 'disabled' : '' }} href="?page={{ GET('page') }}&action=assignkunstverk&innslag={{innslag.getId()}}&id={{playback.getId()}}"  class="btn btn-xs btn-ukm btn-{{ playback.erGodkjent ? 'default' : 'success'}}">
+									Godkjenn kunstverk
 								</a>
 							{% endif %}
-							{% if playback.getArrangementId() == arrangement.getId() %}
-								<a href="?page=UKMplayback&delete_id={{playback.getId()}}&delete_b_id={{innslag.getId()}}" class="PBdel btn btn-xs btn-ukm btn-danger">
-									Slett
+
+								<a href="{{ playback.getUrl() }}" class="btn btn-xs btn-ukm btn-success" target="_blank">
+									Last ned
 								</a>
-							{% endif %}
-						</td>
-					</tr>
+								{% if playback.getArrangementId() == arrangement.getId() %}
+									<a href="?page={{ GET('page') }}&action=edit&innslag={{innslag.getId()}}&id={{playback.getId()}}" class="btn btn-xs btn-ukm">
+										Rediger
+									</a>
+								{% endif %}
+								{% if playback.getArrangementId() == arrangement.getId() %}
+									<a href="?page=UKMplayback&delete_id={{playback.getId()}}&delete_b_id={{innslag.getId()}}" class="PBdel btn btn-xs btn-ukm btn-danger">
+										Slett
+									</a>
+								{% endif %}
+							</td>
+						</tr>
+					{% endif %}					
 				{% endfor %}
 			</table>
 		</li>
