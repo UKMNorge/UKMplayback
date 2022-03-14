@@ -11,9 +11,16 @@ $playback = $innslag->getPlayback()->get($_GET['id']);
 
 $imgPlaybackUrl = $playback->base_url . $playback->getPath() . $playback->fil;
 
+foreach($innslag->getTitler()->getAll() as $tittel) {
+    if($tittel->getPlayback() && $tittel->getPlayback()->getId() == $playback->getId()) {
+        $tittelKunstverk = $tittel;
+    }
+}
+
 UKMplayback::addViewData([
     'arrangement' => $arrangement,
     'innslag' => $innslag,
     'playback' => $playback,
-    'imgPlaybackUrl' => $imgPlaybackUrl
+    'imgPlaybackUrl' => $imgPlaybackUrl,
+    'velgTittel' => $tittelKunstverk ? false : true
 ]);
