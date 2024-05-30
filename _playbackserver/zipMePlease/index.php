@@ -23,8 +23,10 @@ if ( $_SERVER['REQUEST_METHOD'] != 'POST' ){
 
 $data = $_POST['data'];
 
+// Definerer navn med UUID for aa gjore det vanskelig aa gjette
+$destination = $data['name'] . generate_uuid_v4();
 // Create zip (and overwrite existing file)
-$zip = new Zip( $data['name'], true );
+$zip = new Zip( $destination, true );
 $zip->tryCatchAdd();
 
 $errors = [];
@@ -68,3 +70,14 @@ $result = [
     'POST' => $_POST
 ];
 die( json_encode( $result ) );
+
+function generate_uuid_v4() {
+    return sprintf(
+        '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0x0fff) | 0x4000,
+        mt_rand(0, 0x3fff) | 0x8000,
+        mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+    );
+}
